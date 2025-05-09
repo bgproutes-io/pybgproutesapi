@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pybgproutesapi",
-    version="0.1.0",
+    version="0.1.2",
     description="Python bindings for the bgproutes.io API",
     author="Thomas Holterbach and Thomas Alfroy",
     author_email="contact@bgproutes.io",
