@@ -1,5 +1,4 @@
 from pybgproutesapi import vantage_points, rib
-import os
 
 # Retrieve the vantage points operated by RIS or bgproutes.io.
 vps = vantage_points(

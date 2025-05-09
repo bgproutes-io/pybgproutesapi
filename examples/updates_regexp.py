@@ -1,5 +1,4 @@
 from pybgproutesapi import vantage_points, updates, rib
-import os
 
 # Retrieve the full feeders in an FR or US ASN and operated by RIS or bgproutes.io.
 vps = vantage_points(

@@ -1,5 +1,4 @@
 from pybgproutesapi import vantage_points, rib
-import os
 
 min_hops = None
 
