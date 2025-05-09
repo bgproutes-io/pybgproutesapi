@@ -28,6 +28,7 @@ def _get(path: str, params: Dict[str, Any], resource_details: bool = False) -> A
 def vantage_points(
     vp_ips: Optional[List[str]] = None,
     vp_asns: Optional[List[int]] = None,
+    ip_protocol: Optional[str] = None,
     source: Optional[List[str]] = None,
     country: Optional[List[str]] = None,
     rib_size_v4: Optional[tuple] = None,
@@ -38,6 +39,7 @@ def vantage_points(
     params = {
         "vp_ips": ",".join(vp_ips) if vp_ips else None,
         "vp_asns": ",".join(map(str, vp_asns)) if vp_asns else None,
+        "ip_protocol": ip_protocol,
         "source": ",".join(source) if source else None,
         "country": ",".join(country) if country else None,
         "rib_size_v4": f"{rib_size_v4[0]},{rib_size_v4[1]}" if rib_size_v4 else None,
