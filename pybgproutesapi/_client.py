@@ -12,7 +12,7 @@ def _get(path: str, params: Dict[str, Any], resource_details: bool = False) -> A
     headers = {"x-api-key": api_key}
     clean_params = {k: v for k, v in params.items() if v is not None}
 
-    response = requests.get(BASE_URL + path, headers=headers, params=clean_params)
+    response = requests.get(BASE_URL + path, headers=headers, params=clean_params, timeout=60)
 
     try:
         content = response.json()
@@ -34,8 +34,7 @@ def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = Fals
         "Content-Type": "application/json"
     }
 
-    print (json_payload)
-    response = requests.post(BASE_URL + path, headers=headers, json=json_payload)
+    response = requests.post(BASE_URL + path, headers=headers, json=json_payload, timeout=60)
 
     try:
         content = response.json()
