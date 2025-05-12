@@ -24,6 +24,29 @@ def _get(path: str, params: Dict[str, Any], resource_details: bool = False) -> A
 
     return content if resource_details else content["data"]
 
+def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = False) -> Any:
+    api_key = os.getenv("BGP_API_KEY")
+    if not api_key:
+        raise EnvironmentError("Missing environment variable: BGP_API_KEY")
+
+    headers = {
+        "x-api-key": api_key,
+        "Content-Type": "application/json"
+    }
+
+    print (json_payload)
+    response = requests.post(BASE_URL + path, headers=headers, json=json_payload)
+
+    try:
+        content = response.json()
+    except Exception:
+        raise requests.HTTPError(f"Invalid JSON response: {response.text}")
+
+    if not response.ok or "data" not in content:
+        return content  # Return error response as-is
+
+    return content if resource_details else content["data"]
+
 
 def vantage_points(
     vp_ips: Optional[List[str]] = None,
@@ -110,6 +133,7 @@ def rib(
         vp_ips = [vp["ip"] for vp in vp_ips]
 
     pf_str = ",".join(f"{op}:{prefix}" for op, prefix in prefix_filter) if prefix_filter else None
+
     params = {
         "vp_ips": ",".join(vp_ips),
         "date": date,
@@ -123,4 +147,8 @@ def rib(
         "with_as_set": with_as_set,
         "raise_error_bogus_vp": raise_error_bogus_vp
     }
-    return _get("/rib", params, resource_details)
+
+    if len(vp_ips) > 5:
+        return _post("/rib", params, resource_details)
+    else:
+        return _get("/rib", params, resource_details)
