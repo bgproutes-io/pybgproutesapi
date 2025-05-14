@@ -1,6 +1,6 @@
 from pybgproutesapi import vantage_points, updates
 
-vps = vantage_points(source=["bgproutes.io"])
+vps = vantage_points(source=["routeviews"])
 
 for vp in vps:
     vp_upd = updates(
