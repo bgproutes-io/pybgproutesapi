@@ -5,8 +5,6 @@ vps = vantage_points(
     source=["ris", 'bgproutes.io'],
 )
 
-print (vps)
-
 ribs = rib(vps,
     date="2025-05-11T10:30:00",
     prefix_exact_match=['65.169.6.0/23', '91.106.223.0/24', '105.77.0.0/16'],

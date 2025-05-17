@@ -7,11 +7,12 @@ vps = vantage_points(
     rib_size_v4=('>', '900000')
 )
 
-for vp in vps:
+# To avoid excessive resource usage and triggering rate limits, we intentionally focus on just 10 VPs in this example.
+for vp in vps[:10]:
     nb_upd = updates(vp,
-        start_date="2025-05-08T10:00:00",
-        end_date="2025-05-08T20:00:00",
-        return_count=False,
+        start_date="2025-05-11T10:00:00",
+        end_date="2025-05-11T20:00:00",
+        return_count=True,
         aspath_regexp=' 3333 '
     )
 

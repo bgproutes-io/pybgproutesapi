@@ -129,6 +129,26 @@ By default, it is set to `False`, returning only the requested data.
 If set to `True`, the response will also include metadata such as server execution time and the size of the downloaded response in bytes.  
 This information can help you monitor your usage and optimize your queries to stay within your rate limits.
 
+## 🧪 Running Tests
+
+To verify that the client and example scripts work as expected, you can run the included tests using `pytest`.
+
+### 1. Install `pytest` (if not already installed)
+
+```bash
+pip install pytest
+```
+
+### 2. Run the test suite
+
+From the root of the repository:
+
+```bash
+pytest -v
+```
+
+This will run the `test_examples.py` script, which executes all example files in the `examples/` directory to ensure they run without errors.
+
 ## 📌 Advices
 
 - Use `prefix_filter` and `aspath_regexp` to narrow down results efficiently
