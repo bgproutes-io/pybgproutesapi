@@ -5,13 +5,13 @@ It provides convenient functions to query BGP vantage points, updates, and RIB s
 
 ## Installation
 
-### Option 1: Install from PyPI (recommended)
+<!-- ### Option 1: Install from PyPI (recommended)
 
 ```bash
 pip install pybgproutesapi
 ```
 
-### Option 2: Install from source
+### Option 2: Install from source -->
 
 ```bash
 git clone https://github.com/yourusername/pybgproutesapi.git
