@@ -112,8 +112,9 @@ For example: `2025-05-10T12:10:05`
 
 Each API key is subject to usage limits to ensure fair access for all users:
 - **Maximum requests per hour:** 1000
-- **Maximum total server execution time per hour:** 1 minute
+- **Maximum total server execution time per hour:** 5 minute
 - **Maximum data volume downloaded per hour:** 100MB
+- **Maximum number of concurrent query**: 1 (only one request can be processed at a time per API key)
 
 Requests exceeding these limits will be rejected with status code `429 Too Many Requests`.
 
