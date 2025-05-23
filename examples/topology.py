@@ -6,8 +6,8 @@ yesterday = datetime.utcnow() - timedelta(days=1)
 date = yesterday.replace(hour=20, minute=0, second=0, microsecond=0)
 date_str = date.strftime("%Y-%m-%d")
 
-# Get vantage points in FR or US from RIS or PCH
-vps = vantage_points(source=["ris", "routeviews", "bgproutes.io", "pch"])
+# Get all vantage points in a french network.
+vps = vantage_points(source=["ris", "routeviews", "bgproutes.io", "pch"], country=['FR'])
 
 print(f"Total vantage points: {len(vps)}")
 
