@@ -14,6 +14,9 @@ print(f"Total vantage points: {len(vps)}")
 # Store unique AS links (as tuples)
 all_links = set()
 
+# Store unique AS paths
+all_aspaths = set()
+
 # Process in batches of 100
 batch_size = 100
 for i in range(0, len(vps), batch_size):
@@ -21,12 +24,17 @@ for i in range(0, len(vps), batch_size):
     print(f"Processing batch {i // batch_size + 1} with {len(batch)} VPs...")
     
     try:
-        topo = topology(batch, date_str)
+        topo = topology(batch, date_str, with_aspath=True)
         # Normalize links as tuples of integers
         for link in topo["links"]:
             all_links.add(tuple(link))
+        
+        all_aspaths.update(topo['aspaths'])
     except Exception as e:
         print(f"Error processing batch {i // batch_size + 1}: {e}")
 
 # Return total count of distinct links
 print(f"Total distinct AS links: {len(all_links)}")
+
+# Return total count of distinct links
+print(f"Total distinct AS aspaths: {len(all_aspaths)}")

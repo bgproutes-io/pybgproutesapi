@@ -156,6 +156,7 @@ def topology(
     vp_ips: Union[List[str], List[Dict[str, Any]]],
     date: str,
     directed: bool = False,
+    with_aspath: bool = False,
     resource_details: bool = False
 ) -> Any:
     """
@@ -164,6 +165,7 @@ def topology(
     :param vp_ips: List of VP IPs or list of VP metadata dictionaries containing 'ip' key.
     :param date: ISO format date string (YYYY-MM-DDTHH:MM:SS).
     :param directed: If true, the graph will be directed.
+    :param with_aspath: If true, also return the AS paths used to build the topology.
     :param resource_details: If true, return the full API response including metadata.
     """
     # Extract plain IPs from dicts if needed
@@ -173,7 +175,8 @@ def topology(
     params = {
         "vp_ips": ",".join(vp_ips),
         "date": date,
-        "directed": directed
+        "directed": directed,
+        "with_aspath": with_aspath
     }
 
     if len(vp_ips) > 5:
