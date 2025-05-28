@@ -12,7 +12,7 @@ def _get(path: str, params: Dict[str, Any], resource_details: bool = False) -> A
     headers = {"x-api-key": api_key}
     clean_params = {k: v for k, v in params.items() if v is not None}
 
-    response = requests.get(BASE_URL + path, headers=headers, params=clean_params, timeout=120)
+    response = requests.get(BASE_URL + path, headers=headers, params=clean_params, timeout=300)
 
     try:
         content = response.json()
@@ -34,7 +34,7 @@ def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = Fals
         "Content-Type": "application/json"
     }
 
-    response = requests.post(BASE_URL + path, headers=headers, json=json_payload, timeout=120)
+    response = requests.post(BASE_URL + path, headers=headers, json=json_payload, timeout=300)
 
     try:
         content = response.json()
@@ -151,3 +151,35 @@ def rib(
         return _post("/rib", params, resource_details)
     else:
         return _get("/rib", params, resource_details)
+
+def topology(
+    vp_ips: Union[List[str], List[Dict[str, Any]]],
+    date: str,
+    directed: bool = False,
+    with_aspath: bool = False,
+    resource_details: bool = False
+) -> Any:
+    """
+    Fetch the AS-level topology built from the RIB of multiple vantage points.
+
+    :param vp_ips: List of VP IPs or list of VP metadata dictionaries containing 'ip' key.
+    :param date: ISO format date string (YYYY-MM-DDTHH:MM:SS).
+    :param directed: If true, the graph will be directed.
+    :param with_aspath: If true, also return the AS paths used to build the topology.
+    :param resource_details: If true, return the full API response including metadata.
+    """
+    # Extract plain IPs from dicts if needed
+    if isinstance(vp_ips, list) and all(isinstance(d, dict) and 'ip' in d for d in vp_ips):
+        vp_ips = [vp["ip"] for vp in vp_ips]
+
+    params = {
+        "vp_ips": ",".join(vp_ips),
+        "date": date,
+        "directed": directed,
+        "with_aspath": with_aspath
+    }
+
+    if len(vp_ips) > 5:
+        return _post("/topology", params, resource_details)
+    else:
+        return _get("/topology", params, resource_details)
