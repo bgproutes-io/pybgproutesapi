@@ -79,6 +79,7 @@ This library wraps three main endpoints:
 | `vantage_points()`| `/vantage_points`  | List and filter vantage point metadata |
 | `updates()`       | `/updates`         | Query BGP updates                      |
 | `rib()`           | `/rib`             | Retrieve RIB entries at a given time   |
+| `topology()`      | `/topology`        | Retrieve the AS-level topology         |
 
 Each function supports the full range of query parameters and returns the `data` portion of the API response by default.  
 If you want to access the full response (including duration and byte size), pass `resource_details=True`.
