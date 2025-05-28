@@ -14,7 +14,7 @@ pip install pybgproutesapi
 ### Option 2: Install from source -->
 
 ```bash
-git clone https://github.com/yourusername/pybgproutesapi.git
+git clone https://github.com/bgproutes-io/pybgproutesapi.git
 cd pybgproutesapi
 pip install .
 ```
