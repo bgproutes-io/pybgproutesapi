@@ -72,7 +72,7 @@ for prefix, (aspath, community) in rib_data["187.16.217.110"].items():
 
 ## 📘 API endpoints
 
-This library wraps three main endpoints:
+This library wraps four main endpoints:
 
 | Function          | API Endpoint       | Description                            |
 |-------------------|--------------------|----------------------------------------|
