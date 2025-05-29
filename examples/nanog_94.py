@@ -20,8 +20,8 @@ for source in ['routeviews', 'ris', 'pch']:
 
     print(f"{source}: Total vantage points: {len(vps)}")
 
-    # Process in batches of 100
-    batch_size = 100
+    # Process in batches of 10
+    batch_size = 10
     for i in range(0, len(vps), batch_size):
         batch = vps[i:i + batch_size]
         print(f"Processing batch {i // batch_size + 1} with {len(batch)} VPs...")
