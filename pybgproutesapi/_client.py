@@ -157,6 +157,8 @@ def topology(
     date: str,
     directed: bool = False,
     with_aspath: bool = False,
+    with_updates: bool = False,
+    with_rib: bool = True,
     resource_details: bool = False
 ) -> Any:
     """
@@ -166,6 +168,8 @@ def topology(
     :param date: ISO format date string (YYYY-MM-DDTHH:MM:SS).
     :param directed: If true, the graph will be directed.
     :param with_aspath: If true, also return the AS paths used to build the topology.
+    :param with_updates: True possible only when the date is in format YYYY-DD-MM. If true, AS paths in updates observed within the given day are used to build the topology.
+    :param with_rib: True possible only when the date is in format YYYY-DD-MM. If true, AS paths in a RIB observed within the given day are used to build the topology.
     :param resource_details: If true, return the full API response including metadata.
     """
     # Extract plain IPs from dicts if needed
@@ -176,7 +180,9 @@ def topology(
         "vp_ips": ",".join(vp_ips),
         "date": date,
         "directed": directed,
-        "with_aspath": with_aspath
+        "with_aspath": with_aspath,
+        "with_updates": with_updates,
+        "with_rib": with_rib
     }
 
     if len(vp_ips) > 5:
