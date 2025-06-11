@@ -2,12 +2,13 @@ from pybgproutesapi import vantage_points, rib
 from datetime import datetime, timedelta
 
 # Compute yesterday's date at 10:30:00 UTC
-rib_date = (datetime.utcnow() - timedelta(days=1)).replace(hour=10, minute=30, second=0, microsecond=0)
+rib_date = (datetime.utcnow() - timedelta(days=0)).replace(hour=10, minute=30, second=0, microsecond=0)
 rib_date_str = rib_date.strftime("%Y-%m-%dT%H:%M:%S")
 
-# Retrieve the vantage points operated by RIS or bgproutes.io
+# Retrieve the full feeder vantage points operated by RIS or bgproutes.io, routeviews, pch and cgtf.
 vps = vantage_points(
-    source=["ris", 'bgproutes.io'],
+    source=['ris', 'bgproutes.io', 'routeviews', 'pch', 'cgtf'],
+    rib_size_v4=('>', '900000')
 )
 
 ribs = rib(vps,

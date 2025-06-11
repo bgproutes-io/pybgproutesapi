@@ -15,8 +15,8 @@ for source in ['routeviews', 'ris', 'pch']:
     outfile = f'links_{source}.txt'
     fd = open(outfile, 'w', 1)
 
-    # Get all vantage points in a french network.
-    vps = vantage_points(source=[source])[:100]
+    # Get all vantage points from the source platform.
+    vps = vantage_points(source=[source])
 
     print(f"{source}: Total vantage points: {len(vps)}")
 
