@@ -7,7 +7,7 @@ EXAMPLES_DIR = os.path.join(os.path.dirname(__file__), "examples")
 # List of all example script filenames
 example_scripts = [
     "readme_example.py",
-    "rib_prefix_visibility.py",
+    "giant_looking_glass.py",
     "rib_shortest_path.py",
     "ripe_90.py",
     "updates_regexp.py"
