@@ -151,6 +151,35 @@ pytest -v
 
 This will run the `test_examples.py` script, which executes all example files in the `examples/` directory to ensure they run without errors.
 
+## Error Handling
+
+If the API returns an error response (e.g. due to a bad query, invalid input, or exceeded rate limit), the client raises a corresponding Python exception.
+
+You can catch these exceptions using:
+
+```python
+from pybgproutesapi.exceptions import InvalidQueryError, RateLimitExceededError, APIKeyError
+
+try:
+    updates(...)  # your query here
+except InvalidQueryError as e:
+    print("Query problem:", e)
+except RateLimitExceededError as e:
+    print("Rate limit hit:", e)
+except APIKeyError as e:
+    print("API key invalid or missing:", e)
+except Exception as e:
+    print("Other error:", e)
+```
+
+Available exceptions:
+- `InvalidQueryError`: raised when your query has invalid parameters (e.g. bad prefix format, date, or IP)
+- `RateLimitExceededError`: raised when you've reached your API key's rate limits
+- `APIKeyError`: raised when your API key is missing or invalid
+- Generic `Exception` for any unexpected server-side or network error
+
+For detailed parameter descriptions, examples, and advanced usage, see the official [API documentation](https://bgproutes.io/data_api).
+
 ## 📌 Advices
 
 - Use `prefix_filter` and `aspath_regexp` to narrow down results efficiently
