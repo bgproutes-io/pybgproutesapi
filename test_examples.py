@@ -10,7 +10,8 @@ example_scripts = [
     "giant_looking_glass.py",
     "rib_shortest_path.py",
     "ripe_90.py",
-    "updates_regexp.py"
+    "updates_regexp.py",
+    "topology.py"
 ]
 
 @pytest.mark.parametrize("script", example_scripts)
