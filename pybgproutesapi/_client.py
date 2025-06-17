@@ -2,6 +2,32 @@ import os
 import requests
 from typing import List, Optional, Dict, Any, Union
 from ._constants import BASE_URL
+from ._errors import (
+    BGPAPIError,
+    InvalidAPIKeyError,
+    RateLimitError,
+    BadRequestError,
+    NotFoundError,
+    ServerError
+)
+
+def _handle_error_response(response, content):
+    detail = content.get("detail") if isinstance(content, dict) else None
+    status = response.status_code
+
+    if status == 403:
+        raise InvalidAPIKeyError(f"Invalid API key: {detail}")
+    elif status == 429:
+        raise RateLimitError(f"Rate limit exceeded: {detail}")
+    elif status == 400:
+        raise BadRequestError(f"Invalid request: {detail}")
+    elif status == 404:
+        raise NotFoundError(f"Not found: {detail}")
+    elif 500 <= status < 600:
+        raise ServerError(f"Server error ({status}): {detail}")
+    else:
+        raise BGPAPIError(f"Unexpected error ({status}): {detail}")
+
 
 
 def _get(path: str, params: Dict[str, Any], resource_details: bool = False) -> Any:
@@ -19,10 +45,14 @@ def _get(path: str, params: Dict[str, Any], resource_details: bool = False) -> A
     except Exception:
         raise requests.HTTPError(f"Invalid JSON response: {response.text}")
 
-    if not response.ok or "data" not in content:
-        return content  # Return error response as-is
+    if not response.ok:
+        _handle_error_response(response, content)
+
+    if "data" not in content:
+        raise BGPAPIError("Missing 'data' field in API response.")
 
     return content if resource_details else content["data"]
+
 
 def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = False) -> Any:
     api_key = os.getenv("BGP_API_KEY")
@@ -41,11 +71,14 @@ def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = Fals
     except Exception:
         raise requests.HTTPError(f"Invalid JSON response: {response.text}")
 
-    if not response.ok or "data" not in content:
-        return content  # Return error response as-is
+    if not response.ok:
+        _handle_error_response(response, content)
+
+    if "data" not in content:
+        raise BGPAPIError("Missing 'data' field in API response.")
 
     return content if resource_details else content["data"]
-
+    
 
 def vantage_points(
     vp_ips: Optional[List[str]] = None,
