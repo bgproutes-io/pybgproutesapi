@@ -139,7 +139,7 @@ def updates(
         "prefix_filter": pf_str,
         "prefix_exact_match": ",".join(prefix_exact_match) if prefix_exact_match else None,
         "return_aspath": return_aspath,
-        "aspath_exact_match": aspath_exact_match,
+        "aspath_exact_match": ",".join(aspath_exact_match) if aspath_exact_match else None,
         "aspath_regexp": aspath_regexp,
         "return_community": return_community,
         "community_regexp": community_regexp,
