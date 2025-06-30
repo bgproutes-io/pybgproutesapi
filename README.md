@@ -97,7 +97,13 @@ print(result["seconds"], result["bytes"])
 print(result["data"])
 ```
 
-For detailed parameter descriptions, examples, and advanced usage, see the official [API documentation](https://bgproutes.io/data_api).
+For detailed parameter descriptions, usage examples, and advanced options, refer to the official [API documentation](https://bgproutes.io/data_api).
+
+## List Format
+
+A key difference between the REST API and this Python client is how list parameters are handled.  
+> - In the API (via HTTP), list values must be provided as **comma-separated strings**.  
+> - In the Python client, the same parameters should be passed as **Python lists**.
 
 ## Date Format
 
