@@ -126,6 +126,15 @@ def updates(
     if isinstance(vp_ip, dict) and 'ip' in vp_ip:
         vp_ip = vp_ip['ip']
 
+    # ---- Type validation ----
+    if prefix_exact_match is not None and not isinstance(prefix_exact_match, list):
+        raise TypeError("prefix_exact_match must be a list of strings.")
+    if aspath_exact_match is not None and not isinstance(aspath_exact_match, list):
+        raise TypeError("aspath_exact_match must be a list of strings.")
+    if prefix_filter is not None and (not isinstance(prefix_filter, list) or not all(isinstance(p, tuple) and len(p) == 2 for p in prefix_filter)):
+        raise TypeError("prefix_filter must be a list of (operator, prefix) tuples.")
+    # -------------------------
+
     pf_str = ",".join(f"{op}:{prefix}" for op, prefix in prefix_filter) if prefix_filter else None
     params = {
         "vp_ip": vp_ip,
@@ -166,6 +175,15 @@ def rib(
     # Extract IPs if input is list of dicts with 'ip' key
     if isinstance(vp_ips, list) and all(isinstance(d, dict) and 'ip' in d for d in vp_ips):
         vp_ips = [vp["ip"] for vp in vp_ips]
+
+    # ---- Type validation ----
+    if prefix_exact_match is not None and not isinstance(prefix_exact_match, list):
+        raise TypeError("prefix_exact_match must be a list of strings.")
+    if aspath_exact_match is not None and not isinstance(aspath_exact_match, list):
+        raise TypeError("aspath_exact_match must be a list of strings.")
+    if prefix_filter is not None and (not isinstance(prefix_filter, list) or not all(isinstance(p, tuple) and len(p) == 2 for p in prefix_filter)):
+        raise TypeError("prefix_filter must be a list of (operator, prefix) tuples.")
+    # -------------------------
 
     pf_str = ",".join(f"{op}:{prefix}" for op, prefix in prefix_filter) if prefix_filter else None
 

@@ -105,6 +105,8 @@ A key difference between the REST API and this Python client is how list paramet
 > - In the API (via HTTP), list values must be provided as **comma-separated strings**.  
 > - In the Python client, the same parameters should be passed as **Python lists**.
 
+This applies specifically to the parameters `prefix_exact_match`, `aspath_exact_match`, and `prefix_filter`. If any of these are provided with an invalid type, a `TypeError` will be raised with a descriptive message.
+
 ## Date Format
 
 All date parameters must be provided in **ISO 8601** format and in **UTC**:
