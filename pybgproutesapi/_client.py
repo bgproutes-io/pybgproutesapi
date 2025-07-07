@@ -154,7 +154,10 @@ def updates(
         "community_regexp": community_regexp,
         "raise_error_bogus_vp": raise_error_bogus_vp
     }
-    return _get("/updates", params, resource_details)
+    if (aspath_exact_match is not None and len(aspath_exact_match)) > 10 or (prefix_exact_match is not None and len(prefix_exact_match) > 10):
+        return _post("/updates", params, resource_details)
+    else:
+        return _get("/updates", params, resource_details)
 
 
 def rib(
@@ -202,7 +205,7 @@ def rib(
         "raise_error_bogus_vp": raise_error_bogus_vp
     }
 
-    if len(vp_ips) > 5:
+    if len(vp_ips) > 5 or (aspath_exact_match is not None and len(aspath_exact_match) > 10) or (prefix_exact_match is not None and len(prefix_exact_match) > 10):
         return _post("/rib", params, resource_details)
     else:
         return _get("/rib", params, resource_details)
