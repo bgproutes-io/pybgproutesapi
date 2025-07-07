@@ -154,7 +154,7 @@ def updates(
         "community_regexp": community_regexp,
         "raise_error_bogus_vp": raise_error_bogus_vp
     }
-    if (aspath_exact_match is not None and len(aspath_exact_match)) > 10 or (prefix_exact_match is not None and len(prefix_exact_match) > 10):
+    if (aspath_exact_match is not None and len(aspath_exact_match) > 10) or (prefix_exact_match is not None and len(prefix_exact_match) > 10):
         return _post("/updates", params, resource_details)
     else:
         return _get("/updates", params, resource_details)
