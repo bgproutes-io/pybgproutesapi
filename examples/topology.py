@@ -31,7 +31,7 @@ for i in range(0, len(vps), batch_size):
             with_updates=False,
             with_rib=True,
             as_to_ignore=[23467],
-            ignore_private_asns)
+            ignore_private_asns=True)
         
         # Normalize links as tuples of integers
         for link in topo["links"]:
