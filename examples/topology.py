@@ -24,7 +24,14 @@ for i in range(0, len(vps), batch_size):
     print(f"Processing batch {i // batch_size + 1} with {len(batch)} VPs...")
     
     try:
-        topo = topology(batch, date_str, with_aspath=False, with_updates=False, with_rib=True)
+        topo = topology(
+            batch,
+            date_str,
+            with_aspath=False,
+            with_updates=False,
+            with_rib=True,
+            as_to_ignore=[23467],
+            ignore_private_asns)
         
         # Normalize links as tuples of integers
         for link in topo["links"]:

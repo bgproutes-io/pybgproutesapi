@@ -218,6 +218,7 @@ def topology(
     with_updates: bool = False,
     with_rib: bool = True,
     as_to_ignore: List[int] = [],
+    ignore_private_asns: bool = False,
     resource_details: bool = False
 ) -> Any:
     """
@@ -230,6 +231,7 @@ def topology(
     :param with_updates: True possible only when the date is in format YYYY-DD-MM. If true, AS paths in updates observed within the given day are used to build the topology.
     :param with_rib: True possible only when the date is in format YYYY-DD-MM. If true, AS paths in a RIB observed within the given day are used to build the topology.
     :param as_to_ignore: List of ASes to ignore when building the topology and returing the AS path. Those typically include IXP ASN, private ASNs, etc.
+    :param ignore_private_asns: If True, private ASNs are removed in the AS paths.
     :param resource_details: If true, return the full API response including metadata.
     """
     # Extract plain IPs from dicts if needed
@@ -243,10 +245,11 @@ def topology(
         "with_aspath": with_aspath,
         "with_updates": with_updates,
         "with_rib": with_rib,
-        "as_to_ignore": ",".join(map(str, as_to_ignore))
+        "as_to_ignore": ",".join(map(str, as_to_ignore)) if len(as_to_ignore) > 0 else None,
+        "ignore_private_asns": ignore_private_asns
     }
 
-    if len(vp_ips) > 5 or len(as_to_ignore) > 5:
+    if len(vp_ips) >= 5 or len(as_to_ignore) > 5:
         return _post("/topology", params, resource_details)
     else:
         return _get("/topology", params, resource_details)
