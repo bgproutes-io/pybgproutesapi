@@ -64,7 +64,6 @@ def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = Fals
         "Content-Type": "application/json"
     }
 
-    print (json_payload)
     response = requests.post(BASE_URL + path, headers=headers, json=json_payload, timeout=300)
 
     try:
