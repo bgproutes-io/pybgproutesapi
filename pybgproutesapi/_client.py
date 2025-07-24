@@ -64,6 +64,7 @@ def _post(path: str, json_payload: Dict[str, Any], resource_details: bool = Fals
         "Content-Type": "application/json"
     }
 
+    print (json_payload)
     response = requests.post(BASE_URL + path, headers=headers, json=json_payload, timeout=300)
 
     try:
@@ -245,7 +246,7 @@ def topology(
         "with_aspath": with_aspath,
         "with_updates": with_updates,
         "with_rib": with_rib,
-        "as_to_ignore": ",".join(map(str, as_to_ignore)) if len(as_to_ignore) > 0 else None,
+        "as_to_ignore": ",".join(map(str, as_to_ignore)) if len(as_to_ignore) > 0 else "",
         "ignore_private_asns": ignore_private_asns
     }
 
