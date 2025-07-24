@@ -50,6 +50,12 @@ vps = vantage_points(
 )
 print (vps)
 
+###
+# ⚠️ Note: BGP data is only retained for a limited time window.
+# Make sure to update the `start_date`, `end_date`, and `date` fields
+# with a recent date that falls within the retention period.
+###
+
 # Get updates from a VP during a 1-hour window
 for update in updates(
     vp_ip="178.208.11.4",
