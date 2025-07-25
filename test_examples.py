@@ -11,7 +11,8 @@ example_scripts = [
     "rib_shortest_path.py",
     "ripe_90.py",
     "updates_regexp.py",
-    "topology.py"
+    "topology.py",
+    "get_single_homed_ases.py"
 ]
 
 @pytest.mark.parametrize("script", example_scripts)
