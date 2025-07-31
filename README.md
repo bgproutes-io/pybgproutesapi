@@ -194,13 +194,14 @@ except Exception as e:
     print("Unexpected error:", e)
 ```
 
-📋 Available Exceptions
-`BadRequestError:` Raised when your query has invalid parameters (e.g. invalid IP, malformed prefix, wrong date format).
-`RateLimitError:` Raised when your API key has hit the rate or concurrency limits.
-`InvalidAPIKeyError:` Raised when the API key is missing or invalid.
-`NotFoundError:` Raised when the requested resource (e.g. VP or prefix) does not exist.
-`ServerError:` Raised when the server returns a 5xx error.
-`BGPAPIError:` Base class for all API-related exceptions (acts as a generic fallback).
+📋 **Available Exceptions**
+
+- `BadRequestError:` Raised when your query has invalid parameters (e.g. invalid IP, malformed prefix, wrong date format).  
+- `RateLimitError:` Raised when your API key has hit the rate or concurrency limits.  
+- `InvalidAPIKeyError:` Raised when the API key is missing or invalid.  
+- `NotFoundError:` Raised when the requested resource (e.g. VP or prefix) does not exist.  
+- `ServerError:` Raised when the server returns a 5xx error.  
+- `BGPAPIError:` Base class for all API-related exceptions (acts as a generic fallback).  
 
 For detailed parameter descriptions, request formats, and advanced usage examples, visit the official API documentation.
 
