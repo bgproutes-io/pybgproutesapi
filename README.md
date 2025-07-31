@@ -172,25 +172,37 @@ If the API returns an error response (e.g. due to a bad query, invalid input, or
 You can catch these exceptions using:
 
 ```python
-from pybgproutesapi.exceptions import InvalidQueryError, RateLimitExceededError, APIKeyError
+from pybgproutesapi import updates
+from pybgproutesapi._errors import (
+    InvalidAPIKeyError,
+    RateLimitError,
+    BadRequestError,
+    BGPAPIError
+)
 
 try:
     updates(...)  # your query here
-except InvalidQueryError as e:
+except BadRequestError as e:
     print("Query problem:", e)
-except RateLimitExceededError as e:
+except RateLimitError as e:
     print("Rate limit hit:", e)
-except APIKeyError as e:
+except InvalidAPIKeyError as e:
     print("API key invalid or missing:", e)
+except BGPAPIError as e:
+    print("Other API-related error:", e)
 except Exception as e:
-    print("Other error:", e)
+    print("Unexpected error:", e)
 ```
 
-Available exceptions:
-- `InvalidQueryError`: raised when your query has invalid parameters (e.g. bad prefix format, date, or IP)
-- `RateLimitExceededError`: raised when you've reached your API key's rate limits
-- `APIKeyError`: raised when your API key is missing or invalid
-- Generic `Exception` for any unexpected server-side or network error
+📋 Available Exceptions
+`BadRequestError:` Raised when your query has invalid parameters (e.g. invalid IP, malformed prefix, wrong date format).
+`RateLimitError:` Raised when your API key has hit the rate or concurrency limits.
+`InvalidAPIKeyError:` Raised when the API key is missing or invalid.
+`NotFoundError:` Raised when the requested resource (e.g. VP or prefix) does not exist.
+`ServerError:` Raised when the server returns a 5xx error.
+`BGPAPIError:` Base class for all API-related exceptions (acts as a generic fallback).
+
+For detailed parameter descriptions, request formats, and advanced usage examples, visit the official API documentation.
 
 For detailed parameter descriptions, examples, and advanced usage, see the official [API documentation](https://bgproutes.io/data_api).
 
