@@ -14,7 +14,7 @@ import pathlib
 import re
 import sys
 
-from pybgproutesapi import vantage_points, rib, InvalidAPIKeyError, RateLimitError, BadRequestError
+from pybgproutesapi import vantage_points, rib
 
 argp = argparse.ArgumentParser(description=__doc__)
 argp.add_argument(
@@ -93,12 +93,18 @@ def route_count(afi, asn):
     for vp in vantage_points_list:
         print (f'Processing VP: {vp}')
         try:
-            route_count[vp] = rib(
+            
+            tmp = rib(
                 vp_ips=[vp],
                 date=str(datetime.date.today()) + 'T00:00:00',
                 aspath_regexp=f'.*{asn}.*',
                 return_count=True)[vp]
-                
+
+            if not isinstance(tmp, dict):
+                route_count[vp] = tmp
+            else:
+                route_count[vp] = 0
+
         except Exception as e:
             _log.error(f'https://{api_endpoint}/rib for {vp} returned error: {e}')
             continue     
