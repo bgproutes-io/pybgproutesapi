@@ -6,7 +6,7 @@
 
 import argparse
 import configparser
-import datetime
+from datetime import datetime, timedelta, UTC
 import ipaddress
 import logging
 import os
@@ -58,7 +58,7 @@ vantage_points_asns     = (701, 1299, 2914, 3257, 3320, 3356, 3491, 5511, 6453,
                             6461, 6762, 6830, 7018, 12956)
                             # basically all T1 that I can think of this late
 
-def route_count(afi, asn):
+def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
     afi = afi.lower()
 
     if args.asn in vantage_points_asns:
@@ -68,15 +68,17 @@ def route_count(afi, asn):
     try:
         if afi == 'ipv4':
             req_vantage_points = vantage_points(
-                source=vantage_points_sources,
+                sources=vantage_points_sources,
                 vp_asns=vantage_points_asns,
-                ip_protocol='ipv4')
+                data_afi='ipv4',
+                date=date)
 
         elif afi == 'ipv6':
             req_vantage_points = vantage_points(
-                source=vantage_points_sources,
+                sources=vantage_points_sources,
                 vp_asns=vantage_points_asns,
-                ip_protocol='ipv6')
+                data_afi='ipv6',
+                date=date)
 
         else:
             _log.error(f'Invalid AFI {afi} given, only IPv4 and IPv6 are supported.')
@@ -85,23 +87,19 @@ def route_count(afi, asn):
         _log.error(f'https://{api_endpoint}/vantage_point for returned error: {e}')
         sys.exit(1)
 
-    vantage_points_list = []
-    for point in req_vantage_points:
-        vantage_points_list.append(point['ip'])
-
     route_count = {}
-    for vp in vantage_points_list:
+    for vp in req_vantage_points:
         print (f'Processing VP: {vp}')
         try:
             
-            tmp = rib(
-                vp_ips=[vp],
-                date=str(datetime.date.today()) + 'T00:00:00',
+            response = rib(
+                vp,
+                date=date,
                 aspath_regexp=f'.*{asn}.*',
-                return_count=True)[vp]
+                return_count=True)
 
-            if not isinstance(tmp, dict):
-                route_count[vp] = tmp
+            if str(vp.id) in response[vp.peering_protocol]:
+                route_count[vp] = response[vp.peering_protocol][str(vp.id)]
             else:
                 route_count[vp] = 0
 
@@ -112,7 +110,8 @@ def route_count(afi, asn):
         if route_count[vp] == 0:
             _log.debug(f'{vp} does not see {asn}')
 
-    print (route_count)
+    for vp, nb in route_count.items():
+        print (vp, nb)
 
     # TODO: to be moved elsewhere, that’s just to test the algorithm
     max_route_count = max(route_count.values())

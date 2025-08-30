@@ -1,8 +1,6 @@
 from pybgproutesapi import vantage_points, rib, format_rib_response
 from datetime import datetime, timedelta, UTC
 
-# NOTE: ALREADY UPDATED WITH THE NEW BMP CODE VERSION, ALL OTHER EXAMPLES ARE NOT UPDATED.
-
 # Compute today's date at 10:30:00 UTC
 rib_date = (datetime.now(UTC) - timedelta(days=0)).replace(hour=10, minute=30, second=0, microsecond=0)
 rib_date_str = rib_date.strftime("%Y-%m-%dT%H:%M:%S")
@@ -13,8 +11,6 @@ vps = vantage_points(
     rib_size_v4=('>', '900000'),
     date=rib_date_str,
 )
-
-vps = vps[0]
 
 # Get the ribs at the specified time.
 response = rib(vps,

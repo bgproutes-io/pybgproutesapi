@@ -16,7 +16,9 @@ for source in ['routeviews', 'ris', 'pch']:
     fd = open(outfile, 'w', 1)
 
     # Get all vantage points from the source platform.
-    vps = vantage_points(source=[source])
+    vps = vantage_points(
+        sources=[source]
+    )
 
     print(f"{source}: Total vantage points: {len(vps)}")
 

@@ -9,7 +9,7 @@ min_hops = None
 
 vps = vantage_points(
     sources=["bgproutes.io", "ris"],
-    country=['NL'],
+    countries=['NL'],
     date=rib_date_str,
 )
 
@@ -20,7 +20,11 @@ for vp in vps[:10]:
     print(vp)
 
     # Get the RIB entries for this VP at the given date and time and with both ASes in the AS path.
-    rib_dic = rib(vp, date=rib_date_str, aspath_regexp='(^| )1853 (|.* )2914($| )|(^| )2914 (|.* )1853($| )')
+    rib_dic = rib(
+        vp,
+        date=rib_date_str,
+        aspath_regexp='(^| )1853 (|.* )2914($| )|(^| )2914 (|.* )1853($| )'
+    )
 
     # Iterate over all entries in the rib.
     for aspath, community in rib_dic[vp.peering_protocol][str(vp.id)].values():
