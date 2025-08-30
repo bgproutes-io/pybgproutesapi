@@ -1,4 +1,4 @@
-from pybgproutesapi import vantage_points, updates, rib
+from pybgproutesapi import vantage_points, updates, rib, format_updates_response, format_rib_response
 from datetime import datetime, timedelta
 
 # Use current day minus one day
@@ -14,27 +14,27 @@ rib_date_str = rib_time.strftime("%Y-%m-%dT%H:%M:%S")
 
 # Get vantage points in FR or US from RIS or PCH
 vps = vantage_points(
-    source=["ris", "pch"],
-    country=["FR", "US"]
+    sources=["ris", "pch"],
+    countries=["FR", "US"],
+    date=start_date_str,
+    date_end=end_date_str
 )
-print(vps)
 
-# Get updates from a VP during a 1-hour window
-for update in updates(
-    vp_ip="178.208.11.4",
+response = updates(
+    vps,
     start_date=start_date_str,
     end_date=end_date_str,
     aspath_regexp=" 6830 "
-):
-    print(update)
+)
+
+print(format_updates_response(response))
 
 # Get RIB entries for a specific VP and for all prefixes contained in 8.0.0.0/8
-rib_data = rib(
-    vp_ips=["187.16.217.110"],
+response = rib(
+    vps,
     date=rib_date_str,
     return_community=False,
     prefix_filter=[('<<', '8.0.0.0/8')]
 )
 
-for prefix, (aspath, community) in rib_data["187.16.217.110"].items():
-    print(prefix, aspath, community)
+print(format_rib_response(response))
