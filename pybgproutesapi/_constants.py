@@ -1,1 +1,1 @@
-BASE_URL = "http://localhost:12346"
+BASE_URL = "https://api.bgproutes.io"
