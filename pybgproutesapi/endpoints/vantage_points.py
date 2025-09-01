@@ -55,6 +55,9 @@ def vantage_points(
         ip = it.get("ip")
         asn = it.get("asn")
 
+        if id is None:
+            continue
+
         # Optional common fields
         is_active = it.get('is_active')
         source_platform = it.get("source_platform")
