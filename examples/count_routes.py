@@ -69,7 +69,7 @@ def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
         req_vantage_points = vantage_points(
             sources=vantage_points_sources,
             vp_asns=vantage_points_asns,
-            data_afi='6' if '6' in afi else '4',
+            data_afi=6 if '6' in afi else 4,
             date=date)
 
     except Exception as e:
@@ -85,7 +85,8 @@ def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
                 vp,
                 date=date,
                 aspath_regexp=f'.*{asn}.*',
-                return_count=True)
+                return_count=True,
+                data_afi=6 if '6' in afi else 4)
 
             if str(vp.id) in response[vp.peering_protocol]:
                 route_count[vp] = response[vp.peering_protocol][str(vp.id)]
