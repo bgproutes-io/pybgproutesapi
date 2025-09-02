@@ -12,7 +12,7 @@ def vantage_points(
     bmp_parent_asns: Optional[Union[List[int], str]] = None,
     date: Optional[Union[str, List[str]]] = None,
     date_end: Optional[Union[str, List[str]]] = None,
-    data_afi: Optional[Union[List[int], str]] = None,
+    data_afi: Optional[int] = None,
     sources: Optional[Union[List[str], str]] = None,
     countries: Optional[Union[List[str], str]] = None,
     org_countries: Optional[Union[List[str], str]] = None,
@@ -32,7 +32,7 @@ def vantage_points(
         "bmp_parent_asns": _csv(bmp_parent_asns),
         "date": date,  # pass through (API may expect ISO string or day)
         "date_end": date_end,  # pass through (API may expect ISO string or day)
-        "data_afi": _csv(data_afi),
+        "data_afi": data_afi,
         "sources": _csv(sources),
         "countries": _csv(countries),
         "org_countries": _csv(org_countries),
