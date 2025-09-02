@@ -106,26 +106,6 @@ This library wraps four main endpoints:
 
 Each function supports the full range of query parameters provided by the API and returns the `data` portion of the API response by default.  
 For detailed parameter descriptions, usage examples, and advanced options, refer to the official [API documentation](https://bgproutes.io/data_api).
-If you want to access the full response (including duration, byte size and VPs info), pass `details=True`.
-
-#### Example with details.
-
-```python
-result = vantage_points(
-    source=["bgproutes.io"],
-    country=["FR"],
-    details=True
-)
-```
-
-result will be a dictionnaery with four keys:
-- `seconds`: the execution time of the request on our server
-- `bytes`: the number of bytes transferred
-- `info`: information about each VPs (`up`/`down`/`ignored`/`unknown`) for each peering protocol (`bgp` or `bmp`) 
-- `data`: the data
-
-With `details=False`, only the content of `data` would be returned.
-
 
 ## List Format
 
@@ -163,10 +143,28 @@ To manage this, the following rules apply:
 - If you query more than 10 prefixes, you are limited to a maximum of 10 vantage points.
 - Conversely, if you query more than 10 vantage points, you are limited to a maximum of 10 exact-match prefixes.
 
-To help you manage your usage, the `vantage_points`, `updates`, and `rib` functions include a `resource_details` parameter.  
+To help you manage your usage, the `vantage_points`, `updates`, and `rib` functions include a `details` parameter.  
 By default, it is set to `False`, returning only the requested data.  
 If set to `True`, the response will also include metadata such as server execution time and the size of the downloaded response in bytes.  
 This information can help you monitor your usage and optimize your queries to stay within your rate limits.
+
+#### Example with details set to True.
+
+```python
+result = vantage_points(
+    source=["bgproutes.io"],
+    country=["FR"],
+    details=True
+)
+```
+
+result will be a dictionnary with four keys:
+- `seconds`: the execution time of the request on our server
+- `bytes`: the number of bytes transferred
+- `info`: information about each VPs (`up`/`down`/`ignored`/`unknown`) for each peering protocol (`bgp` or `bmp`) 
+- `data`: the data
+
+With `details=False`, only the content of `data` would be returned.
 
 ## 🧪 Running Tests
 
