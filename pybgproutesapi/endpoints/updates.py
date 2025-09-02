@@ -18,8 +18,8 @@ def updates(
     aspath_regexp: Optional[str] = None,
     return_community: bool = True,
     community_regexp: Optional[str] = None,
-    resource_details: bool = False,
-    raise_error_bogus_vp: bool = False
+    chronological_order: bool = True,
+    details: bool = False,
 ) -> Any:
 
     # Normalize prefix_filter
@@ -58,7 +58,6 @@ def updates(
         "aspath_regexp": aspath_regexp,
         "return_community": return_community,
         "community_regexp": community_regexp,
-        "raise_error_bogus_vp": raise_error_bogus_vp
     }
 
     # Use POST if too many exact matches, otherwise GET
@@ -66,8 +65,8 @@ def updates(
         or (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
         or (isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10)
     ):
-        return post("/updates", params, resource_details)
+        return post("/updates", params, details)
     else:
-        return get("/updates", params, resource_details)
+        return get("/updates", params, details)
 
 

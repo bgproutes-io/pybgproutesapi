@@ -12,7 +12,7 @@ def topology(
     with_rib: bool = True,
     as_to_ignore: Optional[Union[List[int], str]] = None,
     ignore_private_asns: bool = False,
-    resource_details: bool = False,
+    details: bool = False,
 ) -> Any:
     """
     Fetch the AS-level topology built from the RIB/updates of multiple vantage points.
@@ -25,7 +25,7 @@ def topology(
     :param with_rib: If true, include AS paths observed in RIBs for the given day.
     :param as_to_ignore: List of ASNs (or CSV string) to ignore.
     :param ignore_private_asns: If True, strip private ASNs from paths.
-    :param resource_details: If true, return the full API response including metadata.
+    :param details: If true, return the full API response including metadata.
     """
 
     # Normalize vps into a list of IPs
@@ -55,10 +55,6 @@ def topology(
     }
 
     if len(vp_bgp_ids) + len(vp_bmp_ids) > 10 or (as_to_ignore is not None and len(as_to_ignore) > 10):
-        return post("/topology", params, resource_details)
+        return post("/topology", params, details)
     else:
-        return get("/topology", params, resource_details)
-
-# vps = vantage_points(vp_ids_bgp=[1,2,3,4,5,6,7,8,9,10,11])
-# t = topology(vps, date='2024-06-01', as_to_ignore=[29222])
-# print (t)
+        return get("/topology", params, details)
