@@ -1,4 +1,4 @@
-from pybgproutesapi import vantage_points, updates, format_updates_response
+from pybgproutesapi import vantage_points, updates, format_updates_response, chunked, merge_responses
 from datetime import datetime, timedelta
 
 # Define date range: yesterday between 10:00 and 20:00 UTC
@@ -17,12 +17,15 @@ vps = vantage_points(
 )
 
 # To avoid excessive resource usage and triggering rate limits, we intentionally focus on just 10 VPs in this example.
-response = updates(
-    vps,
-    start_date=start_str,
-    end_date=end_str,
-    return_count=True,
-    aspath_regexp=' 3333 '
-)
+updates_merged = {"bgp": {}, "bmp": {}}
+for batch in chunked(vps, 2):
+    response = updates(
+        batch,
+        start_date=start_str,
+        end_date=end_str,
+        return_count=True,
+        aspath_regexp=' 3333 '
+    )
+    updates_merged = merge_responses(updates_merged, response)
 
-print(format_updates_response(response))
+print(format_updates_response(updates_merged))

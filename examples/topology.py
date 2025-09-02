@@ -6,8 +6,6 @@ yesterday = datetime.utcnow() - timedelta(days=1)
 date = yesterday.replace(hour=20, minute=0, second=0, microsecond=0)
 date_str = date.strftime("%Y-%m-%d")
 
-date_str = "2024-06-01T00:00:00"
-
 # Get all vantage points in a french network.
 vps = vantage_points(
     sources=["ris", "routeviews", "bgproutes.io", "pch", "cgtf"],
@@ -32,10 +30,9 @@ for i in range(0, len(vps), batch_size):
         topo = topology(
             batch,
             date_str,
-            with_aspath=False,
+            with_aspath=True,
             with_updates=False,
             with_rib=True,
-            as_to_ignore=[23467],
             ignore_private_asns=True)
         
         # Normalize links as tuples of integers

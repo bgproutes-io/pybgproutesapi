@@ -134,5 +134,3 @@ def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
     else:
         max_route_count += 10000
         return round(max_route_count, -4)
-
-print(route_count(args.afi, args.asn))

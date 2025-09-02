@@ -2,7 +2,7 @@ from pybgproutesapi import vantage_points, rib, format_rib_response
 from datetime import datetime, timedelta, UTC
 
 # Compute today's date at 10:30:00 UTC
-rib_date = (datetime.now(UTC) - timedelta(days=0)).replace(hour=10, minute=30, second=0, microsecond=0)
+rib_date = (datetime.now(UTC) - timedelta(days=1)).replace(hour=10, minute=30, second=0, microsecond=0)
 rib_date_str = rib_date.strftime("%Y-%m-%dT%H:%M:%S")
 
 # Retrieve the full feeder vantage points operated by RIS or bgproutes.io, routeviews, pch and cgtf.

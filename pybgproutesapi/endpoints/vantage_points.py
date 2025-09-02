@@ -3,8 +3,8 @@ from ..utils.vp import VPBGP, VPBMP
 from ..utils.query import get, post, _csv
 
 def vantage_points(
-    vp_ids_bgp: Optional[Union[List[str], str]] = None,
-    vp_ids_bmp: Optional[Union[List[str], str]] = None,
+    vp_bgp_ids: Optional[Union[List[str], str]] = None,
+    vp_bmp_ids: Optional[Union[List[str], str]] = None,
     vp_ips: Optional[Union[List[str], str]] = None,
     vp_asns: Optional[Union[List[int], str]] = None,
     peering_protocol: Optional[Union[List[str], str]] = None,
@@ -23,8 +23,8 @@ def vantage_points(
 ) -> List[Union[VPBGP, VPBMP]]:
     # Normalize params to CSV where the API expects comma-separated strings
     params = {
-        "vp_ids_bgp": _csv(vp_ids_bgp),
-        "vp_ids_bmp": _csv(vp_ids_bmp),
+        "vp_bgp_ids": _csv(vp_bgp_ids),
+        "vp_bmp_ids": _csv(vp_bmp_ids),
         "vp_ips": _csv(vp_ips),
         "vp_asns": _csv(vp_asns),
         "peering_protocol": _csv(peering_protocol),

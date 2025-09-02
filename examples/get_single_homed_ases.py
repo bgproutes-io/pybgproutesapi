@@ -1,6 +1,5 @@
-from pybgproutesapi import vantage_points, topology
+from pybgproutesapi import vantage_points, topology, chunked
 from datetime import datetime, timedelta
-from more_itertools import chunked
 import networkx as nx
 
 # Compute yesterday's date (only the day part is used for topology API)

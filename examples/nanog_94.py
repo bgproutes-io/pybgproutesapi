@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from pybgproutesapi import vantage_points, topology
+from pybgproutesapi import vantage_points, topology, chunked
 
 # Use current day minus one day
 yesterday = datetime.utcnow() - timedelta(days=1)
@@ -17,16 +17,16 @@ for source in ['routeviews', 'ris', 'pch']:
 
     # Get all vantage points from the source platform.
     vps = vantage_points(
-        sources=[source]
+        sources=[source],
+        date=date_str+'T00:00:00'
     )
 
     print(f"{source}: Total vantage points: {len(vps)}")
 
     # Process in batches of 10
-    batch_size = 10
-    for i in range(0, len(vps), batch_size):
-        batch = vps[i:i + batch_size]
-        print(f"Processing batch {i // batch_size + 1} with {len(batch)} VPs...")
+    i = 0
+    for batch in chunked(vps, 10):
+        print(f"Processing batch {i} with {len(batch)} VPs...")
         
         try:
             topo = topology(batch, date_str)

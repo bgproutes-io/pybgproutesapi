@@ -13,14 +13,11 @@ def format_updates_response(response, as_json: bool = False) -> str:
     for proto, vps in response.items():
         for vp_id, updates_list in vps.items():
             lines.append(f"Protocol: {proto} | Vantage Point: {vp_id}")
-            if isinstance(updates_list, dict):  # BMP → feed types
-                for feed_type, updates in updates_list.items():
-                    lines.append(f"  Feed: {feed_type}")
-                    for upd in updates:
-                        lines.append(f"    Update: {upd}")
-            else:  # BGP
+            if isinstance(updates_list, list):
                 for upd in updates_list:
                     lines.append(f"  Update: {upd}")
+            else:
+                lines.append(f"  Update count: {updates_list}")
     return "\n".join(lines)
 
 

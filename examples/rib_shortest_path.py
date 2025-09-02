@@ -2,19 +2,19 @@ from pybgproutesapi import vantage_points, rib
 from datetime import datetime, timedelta
 
 # Compute yesterday's date at 01:30:11 UTC
-rib_date = (datetime.utcnow() - timedelta(days=1)).replace(hour=1, minute=30, second=11, microsecond=0)
+rib_date = (datetime.utcnow() - timedelta(days=1)).replace(hour=22, minute=30, second=11, microsecond=0)
 rib_date_str = rib_date.strftime("%Y-%m-%dT%H:%M:%S")
 
 min_hops = None
 
 vps = vantage_points(
     sources=["bgproutes.io", "ris"],
-    countries=['NL'],
+    # countries=['NL'],
     date=rib_date_str,
 )
 
 # To avoid excessive resource usage and triggering rate limits, we intentionally focus on just 10 VPs in this example.
-for vp in vps[:10]:
+for vp in vps[:100]:
     
     # Let's just print the vantage point, to follow the progress.
     print(vp)
@@ -26,8 +26,10 @@ for vp in vps[:10]:
         aspath_regexp='(^| )1853 (|.* )2914($| )|(^| )2914 (|.* )1853($| )'
     )
 
+    print (rib_dic)
+
     # Iterate over all entries in the rib.
-    for aspath, community in rib_dic[vp.peering_protocol][str(vp.id)].values():
+    for aspath, community, _ in rib_dic[vp.peering_protocol][str(vp.id)].values():
         # Transform string ASpath into list of integers.
         aspath = [int(asn) for asn in aspath.split(' ')]
 

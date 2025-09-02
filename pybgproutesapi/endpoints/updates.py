@@ -61,17 +61,12 @@ def updates(
     }
 
     # Use POST if too many exact matches, otherwise GET
-    if (
-        (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
+    if (len(vp_bgp_ids) + len(vp_bmp_ids) > 100
+        or (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
         or (isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10)
     ):
         return post("/updates", params, resource_details)
     else:
         return get("/updates", params, resource_details)
 
-# vps = vantage_points(vp_ids_bgp=[1,2,3])
-# for vp in vps:
-#     print (vp)
-#     l = updates(vp, start_date='2024-06-01T00:00:00', end_date='2024-06-02T00:00:00', prefix_exact_match=['17.0.0.0/8', '21.0.0.0/8', '22.0.0.0/8', '26.0.0.0/8', '28.0.0.0/8', '29.0.0.0/8', '30.0.0.0/8', '33.0.0.0/8', '38.0.0.0/8', '53.0.0.0/8', '55.0.0.0/8'])
-#     print (l)
 
