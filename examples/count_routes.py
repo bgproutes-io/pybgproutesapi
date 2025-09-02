@@ -66,23 +66,12 @@ def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
         return 0
 
     try:
-        if afi == 'ipv4':
-            req_vantage_points = vantage_points(
-                sources=vantage_points_sources,
-                vp_asns=vantage_points_asns,
-                data_afi='ipv4',
-                date=date)
+        req_vantage_points = vantage_points(
+            sources=vantage_points_sources,
+            vp_asns=vantage_points_asns,
+            data_afi='6' if '6' in afi else '4',
+            date=date)
 
-        elif afi == 'ipv6':
-            req_vantage_points = vantage_points(
-                sources=vantage_points_sources,
-                vp_asns=vantage_points_asns,
-                data_afi='ipv6',
-                date=date)
-
-        else:
-            _log.error(f'Invalid AFI {afi} given, only IPv4 and IPv6 are supported.')
-            sys.exit(1)
     except Exception as e:
         _log.error(f'https://{api_endpoint}/vantage_point for returned error: {e}')
         sys.exit(1)
@@ -134,3 +123,5 @@ def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
     else:
         max_route_count += 10000
         return round(max_route_count, -4)
+
+print(route_count(args.afi, args.asn))
