@@ -41,39 +41,56 @@ os.environ["BGP_API_KEY"] = "your-api-key"
 3. **Use the library**:
 
 ```python
-from pybgproutesapi import vantage_points, updates, rib
+from pybgproutesapi import vantage_points, updates, rib, format_updates_response, format_rib_response, chunked, merge_responses
+from datetime import datetime, timedelta
+
+# Use current day minus one day
+yesterday = datetime.utcnow() - timedelta(days=1)
+start_time = yesterday.replace(hour=20, minute=0, second=0, microsecond=0)
+end_time = yesterday.replace(hour=21, minute=0, second=0, microsecond=0)
+rib_time = yesterday.replace(hour=22, minute=0, second=0, microsecond=0)
+
+# Format in ISO 8601
+start_date_str = start_time.strftime("%Y-%m-%dT%H:%M:%S")
+end_date_str = end_time.strftime("%Y-%m-%dT%H:%M:%S")
+rib_date_str = rib_time.strftime("%Y-%m-%dT%H:%M:%S")
 
 # Get vantage points in FR or US from RIS or PCH
 vps = vantage_points(
-    source=["ris", "pch"],
-    country=["FR", "US"]
+    sources=["ris", "pch"],
+    countries=["FR", "CH"],
+    date=start_date_str,
+    date_end=end_date_str
 )
-print (vps)
 
-###
-# ⚠️ Note: BGP data is only retained for a limited time window.
-# Make sure to update the `start_date`, `end_date`, and `date` fields
-# with a recent date that falls within the retention period.
-###
+print (f'A total of {len(vps)} VPs have been found.')
 
-# Get updates from a VP during a 1-hour window
-for update in updates(
-    vp_ip="178.208.11.4",
-    start_date="2025-05-09T10:00:00",
-    end_date="2025-05-09T11:00:00",
-    aspath_regexp=" 6830 "):
-    
-    print (update)
+# --- UPDATES: run by batches of 10 VPs ------------------------------------
+updates_merged = {"bgp": {}, "bmp": {}}
+for batch in chunked(vps, 10):
+    resp = updates(
+        batch,
+        start_date=start_date_str,
+        end_date=end_date_str,
+        aspath_regexp=" 6830 "
+    )
+    updates_merged = merge_responses(updates_merged, resp)
 
-# Get RIB entries for a specific VP and for all prefixes contained in 8.0.0.0/8.
-rib_data = rib(
-    vp_ips=["187.16.217.110"],
-    date='2025-05-09T20:00:00',
-    return_community=False,
-    prefix_filter=[('<<', '8.0.0.0/8')])
+print(format_updates_response(updates_merged))
 
-for prefix, (aspath, community) in rib_data["187.16.217.110"].items():
-    print(prefix, aspath, community)
+# --- RIB: run by batches of 10 VPs ----------------------------------------
+rib_merged = {"bgp": {}, "bmp": {}}
+for batch in chunked(vps, 10):
+    resp = rib(
+        batch,
+        date=rib_date_str,
+        return_community=False,
+        prefix_filter=[('<<', '8.0.0.0/8')]
+    )
+    rib_merged = merge_responses(rib_merged, resp)
+
+print(format_rib_response(rib_merged))
+
 ```
 
 ## 📘 API endpoints
@@ -87,22 +104,7 @@ This library wraps four main endpoints:
 | `rib()`           | `/rib`             | Retrieve RIB entries at a given time   |
 | `topology()`      | `/topology`        | Retrieve the AS-level topology         |
 
-Each function supports the full range of query parameters and returns the `data` portion of the API response by default.  
-If you want to access the full response (including duration and byte size), pass `resource_details=True`.
-
-#### Example with resource details.
-
-```python
-result = vantage_points(
-    source=["bgproutes.io"],
-    country=["FR"],
-    resource_details=True
-)
-
-print(result["seconds"], result["bytes"])
-print(result["data"])
-```
-
+Each function supports the full range of query parameters provided by the API and returns the `data` portion of the API response by default.  
 For detailed parameter descriptions, usage examples, and advanced options, refer to the official [API documentation](https://bgproutes.io/data_api).
 
 ## List Format
@@ -122,6 +124,7 @@ YYYY-MM-DDTHH:MM:SS
 ```
 
 For example: `2025-05-10T12:10:05`
+There is only one exception for the `topology` (see documentation for further details).
 
 # 🚦 Rate Limiting
 
@@ -140,10 +143,28 @@ To manage this, the following rules apply:
 - If you query more than 10 prefixes, you are limited to a maximum of 10 vantage points.
 - Conversely, if you query more than 10 vantage points, you are limited to a maximum of 10 exact-match prefixes.
 
-To help you manage your usage, the `vantage_points`, `updates`, and `rib` functions include a `resource_details` parameter.  
+To help you manage your usage, the `vantage_points`, `updates`, and `rib` functions include a `details` parameter.  
 By default, it is set to `False`, returning only the requested data.  
 If set to `True`, the response will also include metadata such as server execution time and the size of the downloaded response in bytes.  
 This information can help you monitor your usage and optimize your queries to stay within your rate limits.
+
+#### Example with details set to True.
+
+```python
+result = vantage_points(
+    source=["bgproutes.io"],
+    country=["FR"],
+    details=True
+)
+```
+
+result will be a dictionnary with four keys:
+- `seconds`: the execution time of the request on our server
+- `bytes`: the number of bytes transferred
+- `info`: information about each VPs (`up`/`down`/`ignored`/`unknown`) for each peering protocol (`bgp` or `bmp`) 
+- `data`: the data
+
+With `details=False`, only the content of `data` would be returned.
 
 ## 🧪 Running Tests
 
@@ -163,49 +184,7 @@ From the root of the repository:
 pytest -v
 ```
 
-This will run the `test_examples.py` script, which executes all example files in the `examples/` directory to ensure they run without errors.
-
-## Error Handling
-
-If the API returns an error response (e.g. due to a bad query, invalid input, or exceeded rate limit), the client raises a corresponding Python exception.
-
-You can catch these exceptions using:
-
-```python
-from pybgproutesapi import updates
-from pybgproutesapi._errors import (
-    InvalidAPIKeyError,
-    RateLimitError,
-    BadRequestError,
-    BGPAPIError
-)
-
-try:
-    updates(...)  # your query here
-except BadRequestError as e:
-    print("Query problem:", e)
-except RateLimitError as e:
-    print("Rate limit hit:", e)
-except InvalidAPIKeyError as e:
-    print("API key invalid or missing:", e)
-except BGPAPIError as e:
-    print("Other API-related error:", e)
-except Exception as e:
-    print("Unexpected error:", e)
-```
-
-📋 **Available Exceptions**
-
-- `BadRequestError:` Raised when your query has invalid parameters (e.g. invalid IP, malformed prefix, wrong date format).  
-- `RateLimitError:` Raised when your API key has hit the rate or concurrency limits.  
-- `InvalidAPIKeyError:` Raised when the API key is missing or invalid.  
-- `NotFoundError:` Raised when the requested resource (e.g. VP or prefix) does not exist.  
-- `ServerError:` Raised when the server returns a 5xx error.  
-- `BGPAPIError:` Base class for all API-related exceptions (acts as a generic fallback).  
-
-For detailed parameter descriptions, request formats, and advanced usage examples, visit the official API documentation.
-
-For detailed parameter descriptions, examples, and advanced usage, see the official [API documentation](https://bgproutes.io/data_api).
+This will run the `test_examples.py` script, which executes example files in the `examples/` directory to ensure they run without errors.
 
 ## 📌 Advices
 
