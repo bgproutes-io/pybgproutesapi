@@ -60,7 +60,7 @@ def vantage_points(
 
         # Optional common fields
         is_active = it.get('is_active')
-        source_platform = it.get("source_platform")
+        source = it.get("source")
         rib_size_v4 = it.get("rib_size_v4")
         rib_size_v6 = it.get("rib_size_v6")
         country = it.get("country")
@@ -75,7 +75,7 @@ def vantage_points(
                 ip=str(ip),
                 asn=int(asn),
                 is_active=is_active,
-                source_platform=source_platform,
+                source=source,
                 rib_size_v4=rib_size_v4,
                 rib_size_v6=rib_size_v6,
                 country=country,
@@ -93,7 +93,7 @@ def vantage_points(
 
         # Optional common fields
         is_active = it.get('is_active')
-        source_platform = it.get("source_platform")
+        source = it.get("source")
         rib_size_v4 = it.get("rib_size_v4")
         rib_size_v6 = it.get("rib_size_v6")
         country = it.get("country")
@@ -114,7 +114,7 @@ def vantage_points(
                 ip=str(ip),
                 asn=int(asn),
                 is_active=is_active,
-                source_platform=source_platform,
+                source=source,
                 rib_size_v4=rib_size_v4,
                 rib_size_v6=rib_size_v6,
                 country=country,

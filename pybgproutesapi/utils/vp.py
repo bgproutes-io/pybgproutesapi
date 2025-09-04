@@ -8,7 +8,7 @@ class VP:
     ip: str
     asn: int
     is_active: Optional[bool] = None
-    source_platform: Optional[str] = None
+    source: Optional[str] = None
     rib_size_v4: Optional[int] = None
     rib_size_v6: Optional[int] = None
     country: Optional[str] = None
@@ -36,7 +36,7 @@ class VP:
         proto = self.peering_protocol or "vp"
         country = f"[{self.country}]" if self.country else ""
         org = f"{self.org_name}" if self.org_name else ""
-        src = f" | source: {self.source_platform}" if self.source_platform else ""
+        src = f" | source: {self.source}" if self.source else ""
         parts = [proto, "-", f"{self.ip}", f"AS{self.asn}"]
         if country:
             parts.append(country)
@@ -84,7 +84,7 @@ class VPBMP(VP):
         proto = f"bmp{feeds}"
         country = f"[{self.country}]" if self.country else ""
         org = f"{self.org_name}" if self.org_name else ""
-        src = f" | source: {self.source_platform}" if self.source_platform else ""
+        src = f" | source: {self.source}" if self.source else ""
         parts = [proto, "-", f"{self.ip}", f"AS{self.asn}"]
         if country:
             parts.append(country)
