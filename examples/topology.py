@@ -36,8 +36,11 @@ for i in range(0, len(vps), batch_size):
             ignore_private_asns=True)
         
         # Normalize links as tuples of integers
-        for link in topo["links"]:
-            all_links.add(tuple(link))
+        for as1, as2 in topo["links"]:
+            if as1 < as2:
+                all_links.add((as1, as2))
+            else:
+                all_links.add((as2, as1))
         
         all_aspaths.update(topo['aspaths'])
     except Exception as e:
