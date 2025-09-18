@@ -17,7 +17,7 @@ def format_updates_response(response, as_json: bool = False) -> str:
                 for upd in updates_list:
                     lines.append(f"  Update: {upd}")
             else:
-                lines.append(f"  Update count: {updates_list}")
+                lines.append(f"  Update count: A: {updates_list['A']} W: {updates_list['W']}")
     return "\n".join(lines)
 
 

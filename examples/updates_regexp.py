@@ -14,7 +14,7 @@ vps = vantage_points(
     sources=["bgproutes.io", "ris"],
     countries=["FR", "US"],
     rib_size_v4=('>', '900000')
-)
+)[:10]
 
 # To avoid excessive resource usage and triggering rate limits, we intentionally focus on just 10 VPs in this example.
 updates_merged = {"bgp": {}, "bmp": {}}
