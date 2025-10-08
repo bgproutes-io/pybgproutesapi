@@ -47,6 +47,14 @@ def vantage_points(
     else:
         vp_items = items
 
+    vps = parse_vps(vp_items)
+
+    if details:
+        return {'seconds': items['seconds'], 'bytes': items['bytes'], 'data': vps}
+    else:
+        return vps
+
+def parse_vps(vp_items):
     vps: List[Union[VPBGP, VPBMP]] = []
 
     for it in vp_items.get('bgp', []):
@@ -128,7 +136,4 @@ def vantage_points(
             )
         )
 
-    if details:
-        return {'seconds': items['seconds'], 'bytes': items['bytes'], 'data': vps}
-    else:
-        return vps
+    return vps

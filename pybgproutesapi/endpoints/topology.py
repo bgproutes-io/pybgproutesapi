@@ -5,7 +5,7 @@ from ..utils.query import get, post, _csv
 def topology(
     vps: Union[VPBGP, VPBMP, List[Union[VPBGP, VPBMP]]],
     date: str,
-    bmp_feed_types: Optional[Union[List[str], str]] = None,
+    bmp_feed_type: Optional[Union[List[str], str]] = None,
     directed: bool = False,
     with_aspath: bool = False,
     with_updates: bool = False,
@@ -44,7 +44,7 @@ def topology(
     params = {
         "vp_bgp_ids": _csv(vp_bgp_ids) if vp_bgp_ids else None,
         "vp_bmp_ids": _csv(vp_bmp_ids) if vp_bmp_ids else None,
-        "bmp_feed_types": _csv(bmp_feed_types),
+        "bmp_feed_type": _csv(bmp_feed_type),
         "date": date,
         "directed": directed,
         "with_aspath": with_aspath,
