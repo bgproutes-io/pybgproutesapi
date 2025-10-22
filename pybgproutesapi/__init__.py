@@ -13,5 +13,6 @@ __all__ = [
     "format_updates_response",
     "format_rib_response",
     "chunked",
-    "merge_responses"
+    "merge_responses",
+    "parse_vps"
     ]
