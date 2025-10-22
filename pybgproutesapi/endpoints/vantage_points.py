@@ -105,7 +105,9 @@ def vantage_points(
         peer_id = it.get("peer_id", {})
         bmp_info = it.get("bmp_info", {})
         bmp_parent_asn = bmp_info.get("parent_asn")
+        bmp_parent_asn_country = bmp_info.get("parent_asn_country")
         bmp_parent_ip = bmp_info.get("parent_ip")
+        bmp_parent_ip_country = bmp_info.get("parent_ip_country")
         bmp_feed_types = bmp_info.get("feed_types")
 
         vps.append(
@@ -123,7 +125,9 @@ def vantage_points(
                 uptime_intervals=uptime_intervals,
                 peer_id=peer_id,
                 bmp_parent_asn=bmp_parent_asn,
+                bmp_parent_asn_country=bmp_parent_asn_country,
                 bmp_parent_ip=bmp_parent_ip,
+                bmp_parent_ip_country=bmp_parent_ip_country,
                 bmp_feed_types=[int(x) for x in bmp_feed_types] if bmp_feed_types else [],
             )
         )
