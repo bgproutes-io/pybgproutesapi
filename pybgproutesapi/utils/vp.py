@@ -63,7 +63,9 @@ class VPBGP(VP):
 class VPBMP(VP):
     peer_id: Optional[int] = None
     bmp_parent_asn: int = None
+    bmp_parent_asn_country: int = None
     bmp_parent_ip: str = None
+    bmp_parent_ip_country: str = None
     bmp_feed_types: List[int] = None
     uptime_intervals: Dict[Any] = None
 
