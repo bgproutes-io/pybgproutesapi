@@ -112,6 +112,7 @@ def parse_vps(vp_items):
         # BMP-specific info can be nested or flat depending on your API
         peer_id = it.get("peer_id", {})
         bmp_info = it.get("bmp_info", {})
+        bmp_parent_org_name = bmp_info.get("parent_org_name")
         bmp_parent_asn = bmp_info.get("parent_asn")
         bmp_parent_asn_country = bmp_info.get("parent_asn_country")
         bmp_parent_ip = bmp_info.get("parent_ip")
@@ -132,6 +133,7 @@ def parse_vps(vp_items):
                 org_country=org_country,
                 uptime_intervals=uptime_intervals,
                 peer_id=peer_id,
+                bmp_parent_org_name=bmp_parent_org_name,
                 bmp_parent_asn=bmp_parent_asn,
                 bmp_parent_asn_country=bmp_parent_asn_country,
                 bmp_parent_ip=bmp_parent_ip,

@@ -62,6 +62,7 @@ class VPBGP(VP):
 @dataclass(eq=False)
 class VPBMP(VP):
     peer_id: Optional[int] = None
+    bmp_parent_org_name: str = None
     bmp_parent_asn: int = None
     bmp_parent_asn_country: int = None
     bmp_parent_ip: str = None
