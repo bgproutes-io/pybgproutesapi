@@ -14,5 +14,4 @@ __all__ = [
     "format_rib_response",
     "chunked",
     "merge_responses",
-    "parse_vps"
     ]
