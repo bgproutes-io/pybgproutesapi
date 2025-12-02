@@ -59,8 +59,6 @@ def topology(
         "ignore_private_asns": ignore_private_asns,
     }
 
-    print (params)
-
     if len(vp_bgp_ids) + len(vp_bmp_ids) > 10 or (as_to_ignore is not None and len(as_to_ignore) > 10):
         return post("/topology", params, details)
     else:
