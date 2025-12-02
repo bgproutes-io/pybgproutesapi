@@ -5,6 +5,7 @@ from ..utils.query import get, post, _csv
 def topology(
     vps: Union[VPBGP, VPBMP, List[Union[VPBGP, VPBMP]]],
     date: str,
+    date_end: str = None,
     data_afi: int = None,
     bmp_feed_type: Optional[Union[List[str], str]] = None,
     directed: bool = False,
@@ -20,6 +21,7 @@ def topology(
 
     :param vps: A VP object (VPBGP or VPBMP), or a list of VP objects.
     :param date: ISO format date string (YYYY-MM-DDTHH:MM:SS).
+    :param date_end: End date (time interval), ISO format date string (YYYY-MM-DDTHH:MM:SS).
     :param directed: If true, the graph will be directed.
     :param with_aspath: If true, also return the AS paths used to build the topology.
     :param with_updates: If true, include AS paths observed in updates for the given day.
@@ -47,6 +49,7 @@ def topology(
         "vp_bmp_ids": _csv(vp_bmp_ids) if vp_bmp_ids else None,
         "bmp_feed_type": _csv(bmp_feed_type),
         "date": date,
+        "date_end": date_end,
         "data_afi": data_afi,
         "directed": directed,
         "with_aspath": with_aspath,
@@ -55,6 +58,8 @@ def topology(
         "as_to_ignore": ",".join(map(str, as_to_ignore)) if isinstance(as_to_ignore, list) else as_to_ignore,
         "ignore_private_asns": ignore_private_asns,
     }
+
+    print (params)
 
     if len(vp_bgp_ids) + len(vp_bmp_ids) > 10 or (as_to_ignore is not None and len(as_to_ignore) > 10):
         return post("/topology", params, details)
