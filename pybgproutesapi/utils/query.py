@@ -2,7 +2,7 @@ import os
 import requests
 
 from typing import List, Optional, Dict, Any, Union
-from .._constants import BASE_URL
+from ..constants import BASE_URL
 from .errors import (
     BGPAPIError,
     InvalidAPIKeyError,

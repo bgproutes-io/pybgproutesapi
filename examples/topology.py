@@ -10,7 +10,7 @@ date_str = date.strftime("%Y-%m-%d")
 vps = vantage_points(
     sources=["ris", "routeviews", "bgproutes.io", "pch", "cgtf"],
     # countries=['FR']
-)
+)[:10]
 
 print(f"Total vantage points: {len(vps)}")
 
@@ -29,9 +29,10 @@ for i in range(0, len(vps), batch_size):
     try:
         topo = topology(
             batch,
-            date_str,
+            date="2025-11-21",
+            date_end="2025-11-25",
             with_aspath=True,
-            with_updates=False,
+            with_updates=True,
             with_rib=True,
             ignore_private_asns=True)
         
