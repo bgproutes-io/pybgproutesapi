@@ -35,8 +35,8 @@ def format_rib_response(response, as_json: bool = False) -> str:
         for vp_id, entries in vps.items():
             lines.append(f"Protocol: {proto} | Vantage Point: {vp_id}")
             for prefix, values in entries.items():
-                if isinstance(values, tuple) and len(values) == 2:
-                    aspath, community = values
+                if isinstance(values, list) and len(values) == 3:
+                    aspath, community, bmp_feed_id = values
                     lines.append(f"  Prefix: {prefix}")
                     lines.append(f"    AS Path: {aspath}")
                     lines.append(f"    Communities: {community}")
