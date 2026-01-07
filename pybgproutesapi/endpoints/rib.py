@@ -17,6 +17,8 @@ def rib(
     return_count: bool = False,
     with_as_set: bool = True,
     details: bool = False,
+    base_url: str = None,
+    api_key: str = None,
 ) -> Any:
     # Normalize prefix_filter
     if isinstance(prefix_filter, list):
@@ -58,7 +60,7 @@ def rib(
         or (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
         or (isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10)
     ):
-        return post("/rib", params, details)
+        return post("/rib", params, details, base_url=base_url, api_key=api_key)
     else:
-        return get("/rib", params, details)
+        return get("/rib", params, details, base_url=base_url, api_key=api_key)
 

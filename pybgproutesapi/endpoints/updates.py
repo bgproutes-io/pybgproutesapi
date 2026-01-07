@@ -20,6 +20,8 @@ def updates(
     community_regexp: Optional[str] = None,
     chronological_order: bool = True,
     details: bool = False,
+    base_url: str = None,
+    api_key: str = None,
 ) -> Any:
 
     # Normalize prefix_filter
@@ -65,8 +67,8 @@ def updates(
         or (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
         or (isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10)
     ):
-        return post("/updates", params, details)
+        return post("/updates", params, details, base_url=base_url, api_key=api_key)
     else:
-        return get("/updates", params, details)
+        return get("/updates", params, details, base_url=base_url, api_key=api_key)
 
 

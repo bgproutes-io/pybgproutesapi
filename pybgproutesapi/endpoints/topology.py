@@ -15,6 +15,8 @@ def topology(
     as_to_ignore: Optional[Union[List[int], str]] = None,
     ignore_private_asns: bool = False,
     details: bool = False,
+    base_url: str = None,
+    api_key: str = None,
 ) -> Any:
     """
     Fetch the AS-level topology built from the RIB/updates of multiple vantage points.
@@ -60,6 +62,6 @@ def topology(
     }
 
     if len(vp_bgp_ids) + len(vp_bmp_ids) > 10 or (as_to_ignore is not None and len(as_to_ignore) > 10):
-        return post("/topology", params, details)
+        return post("/topology", params, details, base_url=base_url, api_key=api_key)
     else:
-        return get("/topology", params, details)
+        return get("/topology", params, details, base_url=base_url, api_key=api_key)

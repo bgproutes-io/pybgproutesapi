@@ -20,6 +20,8 @@ def vantage_points(
     rib_size_v6: Optional[tuple] = None,
     return_uptime_intervals: Optional[bool] = False,
     details: Optional[bool] = False,
+    base_url: str = None,
+    api_key: str = None,
 ) -> List[Union[VPBGP, VPBMP]]:
     # Normalize params to CSV where the API expects comma-separated strings
     params = {
@@ -40,7 +42,7 @@ def vantage_points(
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
         "return_uptime_intervals": return_uptime_intervals
     }
-    items = get("/vantage_points", params, details)
+    items = get("/vantage_points", params, details, base_url=base_url, api_key=api_key)
 
     if details:
         vp_items = items['data']
