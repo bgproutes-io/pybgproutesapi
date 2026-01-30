@@ -19,7 +19,6 @@ def vantage_points(
     rib_size_v4: Optional[tuple] = None,
     rib_size_v6: Optional[tuple] = None,
     status: Optional[List[str]] = None,
-    return_status: Optional[bool] = False,
     return_status_history: Optional[bool] = False,
     return_uptime_intervals: Optional[bool] = False,
     details: Optional[bool] = False,
@@ -44,7 +43,6 @@ def vantage_points(
         "rib_size_v4": f"{rib_size_v4[0]},{rib_size_v4[1]}" if rib_size_v4 else None,
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
         "status": _csv(status),
-        "return_status": return_status,
         "return_status_history": return_status_history,
         "return_uptime_intervals": return_uptime_intervals
 

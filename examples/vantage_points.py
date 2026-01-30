@@ -26,17 +26,62 @@ date_end_str = date_end.strftime("%Y-%m-%dT%H:%M:%S")
 
 
 def run_vp_query(description: str, *, show_n: int = 10, **kwargs) -> None:
-    """Run a vantage_points query, print a description + summary + first N VPs (id, protocol)."""
     print(f"\n- {description}")
     results = vantage_points(**kwargs)
     vps = results.get("data", []) or []
 
     print(f"  -> {len(vps)} VPs in {results.get('seconds')}s")
-
-    # Print up to N (id, protocol) so you can investigate afterwards
     print(f"  sample (up to {min(show_n, len(vps))}):")
+
     for i, vp in enumerate(vps[:show_n], start=1):
-        print(f"    {i:02d}. id={vp.id} protocol={vp.peering_protocol}")
+        # ----------------
+        # Status + since
+        # ----------------
+        if vp.peering_protocol == "bgp":
+            since = (
+                vp.status_since.isoformat()
+                if hasattr(vp.status_since, "isoformat")
+                else vp.status_since
+            )
+
+            print(
+                f"    {i:02d}. id={vp.id} protocol=bgp "
+                f"status={vp.status} since={since}"
+            )
+
+        else:  # BMP
+            ft_str = ",".join(map(str, vp.bmp_feed_types))
+            print(
+                f"    {i:02d}. id={vp.id} protocol=bmp "
+                f"feed_types={ft_str}"
+            )
+
+            for ft, status in vp.status.items():
+                raw_since = vp.status_since.get(ft)
+                since = (
+                    raw_since.isoformat()
+                    if hasattr(raw_since, "isoformat")
+                    else raw_since
+                )
+                print(f"        ft={ft} status={status} since={since}")
+
+
+        # ----------------
+        # Status history
+        # ----------------
+        # BGP history
+        if vp.peering_protocol == "bgp":
+            for ts, state, reason in vp.status_history:
+                ts_str = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
+                print(f"          {ts_str} state={state} reason={reason}")
+
+        # BMP history
+        else:
+            for ft, history in vp.status_history.items():
+                print(f"          ft={ft}:")
+                for ts, state, reason in history:
+                    ts_str = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
+                    print(f"            {ts_str} state={state} reason={reason}")
 
 
 for proto in ["bgp", "bmp"]:
@@ -52,7 +97,7 @@ for proto in ["bgp", "bmp"]:
         sources=SOURCES,
         peering_protocol=proto,
         details=True,
-        return_status=False,
+        return_status_history=True
     )
 
     # 1) No date filter (current snapshot / default behavior)
