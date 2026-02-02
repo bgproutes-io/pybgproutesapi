@@ -71,7 +71,7 @@ def run_vp_query(description: str, *, show_n: int = 10, **kwargs) -> None:
         # ----------------
         # BGP history
         if vp.peering_protocol == "bgp":
-            for ts, state, reason in vp.status_history:
+            for ts, state, reason in list(reversed(vp.status_history))[:10]:
                 ts_str = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
                 print(f"          {ts_str} state={state} reason={reason}")
 
@@ -79,7 +79,7 @@ def run_vp_query(description: str, *, show_n: int = 10, **kwargs) -> None:
         else:
             for ft, history in vp.status_history.items():
                 print(f"          ft={ft}:")
-                for ts, state, reason in history:
+                for ts, state, reason in list(reversed(history))[:10]:
                     ts_str = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
                     print(f"            {ts_str} state={state} reason={reason}")
 
@@ -104,6 +104,21 @@ for proto in ["bgp", "bmp"]:
     run_vp_query(
         "List all VPs (no date filter), with details=True and return_status=False.",
         **base_kwargs,
+    )
+
+
+    # 1) No date filter (current snapshot / default behavior)
+    run_vp_query(
+        "List all VPs (no date filter), with details=True and return_status=False.",
+        **base_kwargs,
+        status=['up'],
+    )
+
+    # 1) No date filter (current snapshot / default behavior)
+    run_vp_query(
+        "List all VPs (no date filter), with details=True and return_status=False.",
+        **base_kwargs,
+        status=['down'],
     )
 
     # 2) With date filter
