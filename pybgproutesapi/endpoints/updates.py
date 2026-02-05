@@ -22,6 +22,10 @@ def updates(
     details: bool = False,
     base_url: str = None,
     api_key: str = None,
+    return_rov_status: bool = False,
+    return_aspa_status: bool = False,
+    rov_status_filter: list[int] = None,
+    aspa_status_filter: list[int] = None,
     version: str = "v1"
 ) -> Any:
 
@@ -36,6 +40,12 @@ def updates(
 
     vp_bgp_ids = []
     vp_bmp_ids = []
+
+    if rov_status_filter is not None:
+        rov_status_filter = ",".join([str(e) for e in rov_status_filter])
+
+    if aspa_status_filter is not None:
+        aspa_status_filter = ",".join([str(e) for e in aspa_status_filter])
 
     for vp in vps:
         if vp.peering_protocol == 'bgp':
@@ -61,6 +71,10 @@ def updates(
         "aspath_regexp": aspath_regexp,
         "return_community": return_community,
         "community_regexp": community_regexp,
+        "return_rov_status": return_rov_status,
+        "return_aspa_status": return_aspa_status,
+        "rov_status_filter": rov_status_filter,
+        "aspa_status_filter": aspa_status_filter
     }
 
     # Use POST if too many exact matches, otherwise GET
