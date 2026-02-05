@@ -18,8 +18,13 @@ def vantage_points(
     org_countries: Optional[Union[List[str], str]] = None,
     rib_size_v4: Optional[tuple] = None,
     rib_size_v6: Optional[tuple] = None,
+    status: Optional[List[str]] = None,
+    return_status_history: Optional[bool] = False,
     return_uptime_intervals: Optional[bool] = False,
     details: Optional[bool] = False,
+    base_url: str = None,
+    api_key: str = None,
+    version: str = "v1",
 ) -> List[Union[VPBGP, VPBMP]]:
     # Normalize params to CSV where the API expects comma-separated strings
     params = {
@@ -38,9 +43,12 @@ def vantage_points(
         "org_countries": _csv(org_countries),
         "rib_size_v4": f"{rib_size_v4[0]},{rib_size_v4[1]}" if rib_size_v4 else None,
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
+        "status": _csv(status),
+        "return_status_history": return_status_history,
         "return_uptime_intervals": return_uptime_intervals
+
     }
-    items = get("/vantage_points", params, details)
+    items = get(f"/{version}/vantage_points", params, details, base_url=base_url, api_key=api_key)
 
     if details:
         vp_items = items['data']
@@ -67,13 +75,15 @@ def parse_vps(vp_items):
             continue
 
         # Optional common fields
-        is_active = it.get('is_active')
         source = it.get("source")
         rib_size_v4 = it.get("rib_size_v4")
         rib_size_v6 = it.get("rib_size_v6")
         country = it.get("country")
         org_name = it.get("org_name")
         org_country = it.get("org_country")
+        status = it.get("status")
+        status_since = it.get("status_since")
+        status_history = it.get("status_history")
         uptime_intervals = it.get("uptime_intervals")
 
         # Build objects
@@ -82,13 +92,15 @@ def parse_vps(vp_items):
                 id=int(id),
                 ip=str(ip),
                 asn=int(asn),
-                is_active=is_active,
                 source=source,
                 rib_size_v4=rib_size_v4,
                 rib_size_v6=rib_size_v6,
                 country=country,
                 org_name=org_name,
                 org_country=org_country,
+                status=status,
+                status_since=status_since,
+                status_history=status_history,
                 uptime_intervals=uptime_intervals,
             )
         )
@@ -100,13 +112,15 @@ def parse_vps(vp_items):
         asn = it.get("asn")
 
         # Optional common fields
-        is_active = it.get('is_active')
         source = it.get("source")
         rib_size_v4 = it.get("rib_size_v4")
         rib_size_v6 = it.get("rib_size_v6")
         country = it.get("country")
         org_name = it.get("org_name")
         org_country = it.get("org_country")
+        status = it.get("status")
+        status_since = it.get("status_since")
+        status_history = it.get("status_history")
         uptime_intervals = it.get("uptime_intervals")
 
         # BMP-specific info can be nested or flat depending on your API
@@ -124,13 +138,15 @@ def parse_vps(vp_items):
                 id=int(id),
                 ip=str(ip),
                 asn=int(asn),
-                is_active=is_active,
                 source=source,
                 rib_size_v4=rib_size_v4,
                 rib_size_v6=rib_size_v6,
                 country=country,
                 org_name=org_name,
                 org_country=org_country,
+                status=status,
+                status_since=status_since,
+                status_history=status_history,
                 uptime_intervals=uptime_intervals,
                 peer_id=peer_id,
                 bmp_parent_org_name=bmp_parent_org_name,

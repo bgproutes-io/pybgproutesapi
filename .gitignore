@@ -1,3 +1,6 @@
 __pycache__
 pybgproutesapi.*
 build
+*.egg-info
+.venv
+build

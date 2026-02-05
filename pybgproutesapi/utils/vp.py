@@ -7,7 +7,6 @@ class VP:
     id: int
     ip: str
     asn: int
-    is_active: Optional[bool] = None
     source: Optional[str] = None
     rib_size_v4: Optional[int] = None
     rib_size_v6: Optional[int] = None
@@ -15,6 +14,9 @@ class VP:
     org_name: Optional[str] = None
     org_country: Optional[str] = None
     peering_protocol: Optional[str] = None
+    status: Optional[Any] = None
+    status_since: Optional[Any] = None
+    status_history: Optional[Any] = None
     uptime_intervals: Optional[Any] = None
 
     def __eq__(self, other):
@@ -37,7 +39,7 @@ class VP:
         country = f"[{self.country}]" if self.country else ""
         org = f"{self.org_name}" if self.org_name else ""
         src = f" | source: {self.source}" if self.source else ""
-        parts = [proto, "-", f"{self.ip}", f"AS{self.asn}"]
+        parts = [str(self.id), ':', proto, "-", f"{self.ip}", f"AS{self.asn}"]
         if country:
             parts.append(country)
         if org:
@@ -50,6 +52,9 @@ class VP:
 
 @dataclass(eq=False)
 class VPBGP(VP):
+    status: str = None
+    status_since: str = None
+    status_history: List[Any] = None
     uptime_intervals: List[Any] = None
 
     def __post_init__(self):
@@ -68,6 +73,9 @@ class VPBMP(VP):
     bmp_parent_ip: str = None
     bmp_parent_ip_country: str = None
     bmp_feed_types: List[int] = None
+    status: Dict[str] = None
+    status_since: Dict[str] = None
+    status_history: Dict[Any] = None
     uptime_intervals: Dict[Any] = None
 
     # This is just an informational variable used within the code for optimizations but not given to the user.
@@ -88,7 +96,7 @@ class VPBMP(VP):
         country = f"[{self.country}]" if self.country else ""
         org = f"{self.org_name}" if self.org_name else ""
         src = f" | source: {self.source}" if self.source else ""
-        parts = [proto, "-", f"{self.ip}", f"AS{self.asn}"]
+        parts = [str(self.id), ':', proto, "-", f"{self.ip}", f"AS{self.asn}"]
         if country:
             parts.append(country)
         if org:

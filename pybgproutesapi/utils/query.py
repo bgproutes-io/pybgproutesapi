@@ -23,15 +23,18 @@ def _csv(val: Optional[Union[List[Any], str]]) -> Optional[str]:
     return ",".join(map(str, val))
 
 
-def get(path: str, params: Dict[str, Any], details: bool = True) -> Any:
-    api_key = os.getenv("BGP_API_KEY")
+def get(path: str, params: Dict[str, Any], details: bool = True, base_url :str=None, api_key :str=None) -> Any:
+    if api_key is None:
+        api_key = os.getenv("BGP_API_KEY")
+
     if not api_key:
         raise EnvironmentError("Missing environment variable: BGP_API_KEY")
 
     headers = {"x-api-key": api_key}
     clean_params = {k: v for k, v in params.items() if v is not None}
 
-    response = requests.get(BASE_URL + path, headers=headers, params=clean_params, timeout=300)
+    url = BASE_URL if base_url is None else base_url
+    response = requests.get(url + path, headers=headers, params=clean_params, timeout=300)
 
     try:
         content = response.json()
@@ -47,8 +50,10 @@ def get(path: str, params: Dict[str, Any], details: bool = True) -> Any:
     return content if details else content["data"]
 
 
-def post(path: str, json_payload: Dict[str, Any], details: bool = True) -> Any:
-    api_key = os.getenv("BGP_API_KEY")
+def post(path: str, json_payload: Dict[str, Any], details: bool = True, base_url :str=None, api_key :str=None) -> Any:
+    if api_key is None:
+        api_key = os.getenv("BGP_API_KEY")
+        
     if not api_key:
         raise EnvironmentError("Missing environment variable: BGP_API_KEY")
 
@@ -57,7 +62,8 @@ def post(path: str, json_payload: Dict[str, Any], details: bool = True) -> Any:
         "Content-Type": "application/json"
     }
 
-    response = requests.post(BASE_URL + path, headers=headers, json=json_payload, timeout=300)
+    url = BASE_URL if base_url is None else base_url
+    response = requests.post(url + path, headers=headers, json=json_payload, timeout=300)
 
     try:
         content = response.json()
