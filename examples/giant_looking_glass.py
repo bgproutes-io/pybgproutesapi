@@ -16,7 +16,8 @@ vps = vantage_points(
 response = rib(vps,
     date=rib_date_str,
     prefix_exact_match=['65.169.6.0/23', '91.106.223.0/24', '105.77.0.0/16'],
-    return_rov_status=True
+    return_rov_status=True,
+    return_aspa_status=True
 )
 
 print (format_rib_response(response))

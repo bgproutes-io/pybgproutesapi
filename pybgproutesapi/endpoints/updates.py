@@ -26,7 +26,6 @@ def updates(
     return_aspa_status: bool = False,
     rov_status_filter: list[int] = None,
     aspa_status_filter: list[int] = None,
-    version: str = "v1"
 ) -> Any:
 
     # Normalize prefix_filter
@@ -82,8 +81,8 @@ def updates(
         or (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
         or (isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10)
     ):
-        return post(f"/{version}/updates", params, details, base_url=base_url, api_key=api_key)
+        return post("/updates", params, details, base_url=base_url, api_key=api_key)
     else:
-        return get(f"/{version}/updates", params, details, base_url=base_url, api_key=api_key)
+        return get(f"/updates", params, details, base_url=base_url, api_key=api_key)
 
 

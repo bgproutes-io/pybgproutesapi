@@ -2,7 +2,7 @@ import os
 import requests
 
 from typing import List, Optional, Dict, Any, Union
-from ..constants import BASE_URL
+from ..constants import BASE_URL, API_VERSION
 from .errors import (
     BGPAPIError,
     InvalidAPIKeyError,
@@ -34,7 +34,7 @@ def get(path: str, params: Dict[str, Any], details: bool = True, base_url :str=N
     clean_params = {k: v for k, v in params.items() if v is not None}
 
     url = BASE_URL if base_url is None else base_url
-    response = requests.get(url + path, headers=headers, params=clean_params, timeout=300)
+    response = requests.get(url + '/' + API_VERSION + path, headers=headers, params=clean_params, timeout=300)
 
     try:
         content = response.json()
@@ -63,7 +63,7 @@ def post(path: str, json_payload: Dict[str, Any], details: bool = True, base_url
     }
 
     url = BASE_URL if base_url is None else base_url
-    response = requests.post(url + path, headers=headers, json=json_payload, timeout=300)
+    response = requests.post(url + '/' + API_VERSION + path, headers=headers, json=json_payload, timeout=300)
 
     try:
         content = response.json()

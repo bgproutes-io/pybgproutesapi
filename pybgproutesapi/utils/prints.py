@@ -40,7 +40,8 @@ def format_rib_response(response, as_json: bool = False) -> str:
                     lines.append(f"  Prefix: {prefix}")
                     lines.append(f"    AS Path: {aspath}")
                     lines.append(f"    Communities: {community}")
-                    lines.append(f"    RPKI status: {rov_status}")
+                    lines.append(f"    ROV status: {rov_status}")
+                    lines.append(f"    ASPA status: {aspa_status}")
                 else:  # Fallback if structure changes
                     lines.append(f"  Prefix: {prefix} → {values}")
     return "\n".join(lines)

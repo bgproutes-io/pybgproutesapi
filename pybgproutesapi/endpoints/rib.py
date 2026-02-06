@@ -23,7 +23,6 @@ def rib(
     rov_status_filter: list[int] = None,
     aspa_status_filter: list[int] = None,
     api_key: str = None,
-    version: str = "v1",
 ) -> Any:
     # Normalize prefix_filter
     if isinstance(prefix_filter, list):
@@ -75,7 +74,7 @@ def rib(
         or (isinstance(aspath_exact_match, list) and len(aspath_exact_match) > 10)
         or (isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10)
     ):
-        return post(f"/{version}/rib", params, details, base_url=base_url, api_key=api_key)
+        return post("/rib", params, details, base_url=base_url, api_key=api_key)
     else:
-        return get(f"/{version}/rib", params, details, base_url=base_url, api_key=api_key)
+        return get("/rib", params, details, base_url=base_url, api_key=api_key)
 
