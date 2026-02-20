@@ -88,7 +88,7 @@ def parse_vps(vp_items):
         # Build objects
         vps.append(
             VPBGP(
-                id=int(id),
+                unique_id=int(id),
                 ip=str(ip),
                 asn=int(asn),
                 source=source,
@@ -134,7 +134,7 @@ def parse_vps(vp_items):
 
         vps.append(
             VPBMP(
-                id=int(id),
+                unique_id=int(id),
                 ip=str(ip),
                 asn=int(asn),
                 source=source,
