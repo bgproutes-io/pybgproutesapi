@@ -21,7 +21,12 @@ G = nx.Graph()
 
 # Process in batches of 10
 for vp_batch in chunked(vps, 10):
-    print(f"\n📦 Processing the following VPs: {', '.join(map(lambda x: f"Protocol: {x.peering_protocol}, ID: {x.id}", vp_batch))}")
+    vp_str = ", ".join(
+        f"Protocol: {x.peering_protocol}, ID: {x.unique_id}"
+    for x in vp_batch
+    )
+
+    print(f"\n📦 Processing the following VPs: {vp_str}")
 
     # Get topology for this batch of VPs
     topo = topology(vp_batch, date=rib_date_str, with_rib=True, with_updates=False)

@@ -77,4 +77,3 @@ def rib(
         return post("/rib", params, details, base_url=base_url, api_key=api_key)
     else:
         return get("/rib", params, details, base_url=base_url, api_key=api_key)
-
