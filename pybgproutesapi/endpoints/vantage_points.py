@@ -47,6 +47,7 @@ def vantage_points(
         "return_uptime_intervals": return_uptime_intervals
 
     }
+
     items = get("/vantage_points", params, details, base_url=base_url, api_key=api_key)
 
     if details:
