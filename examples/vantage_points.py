@@ -137,7 +137,7 @@ for proto in ["bgp", "bmp"]:
         status=["down"],
     )
 
-    # 5) With date + status=['down']
+    # 6) With date + status=['unknown']
     run_vp_query(
         f"List VPs at date={rib_date_str} filtered by status=['unknown'].",
         **base_kwargs,
@@ -145,7 +145,7 @@ for proto in ["bgp", "bmp"]:
         status=["unknown"],
     )
 
-    # 6) With date + rib_size_v4 threshold + status=['ready']
+    # 7) With date + rib_size_v4 threshold + status=['ready']
     run_vp_query(
         f"List VPs at date={rib_date_str} with rib_size_v4 > 900000 and status=['ready'].",
         **base_kwargs,
@@ -154,7 +154,7 @@ for proto in ["bgp", "bmp"]:
         status=["ready"],
     )
 
-    # 7) 24h interval using date_end + status=['up','down']
+    # 8) 24h interval using date_end + status=['up','down']
     run_vp_query(
         f"List VPs over a 24h interval: date={rib_date_str} to date_end={date_end_str}, filtered by status=['up','down'].",
         **base_kwargs,
