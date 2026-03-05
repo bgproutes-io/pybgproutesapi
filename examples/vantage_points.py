@@ -137,6 +137,14 @@ for proto in ["bgp", "bmp"]:
         status=["down"],
     )
 
+    # 5) With date + status=['down']
+    run_vp_query(
+        f"List VPs at date={rib_date_str} filtered by status=['unknown'].",
+        **base_kwargs,
+        date=rib_date_str,
+        status=["unknown"],
+    )
+
     # 6) With date + rib_size_v4 threshold + status=['ready']
     run_vp_query(
         f"List VPs at date={rib_date_str} with rib_size_v4 > 900000 and status=['ready'].",
