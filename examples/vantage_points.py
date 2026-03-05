@@ -45,14 +45,14 @@ def run_vp_query(description: str, *, show_n: int = 10, **kwargs) -> None:
             )
 
             print(
-                f"    {i:02d}. id={vp.id} protocol=bgp "
+                f"    {i:02d}. id={vp.unique_id} protocol=bgp "
                 f"status={vp.status} since={since}"
             )
 
         else:  # BMP
             ft_str = ",".join(map(str, vp.bmp_feed_types))
             print(
-                f"    {i:02d}. id={vp.id} protocol=bmp "
+                f"    {i:02d}. id={vp.unique_id} protocol=bmp "
                 f"feed_types={ft_str}"
             )
 

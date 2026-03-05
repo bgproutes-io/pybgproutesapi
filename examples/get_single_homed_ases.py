@@ -23,7 +23,7 @@ G = nx.Graph()
 # Process in batches of 10
 for vp_batch in chunked(vps, 10):
     vp_str = ", ".join(
-        f"Protocol: {x.peering_protocol}, ID: {x.id}"
+        f"Protocol: {x.peering_protocol}, ID: {x.unique_id}"
     for x in vp_batch
     )
 

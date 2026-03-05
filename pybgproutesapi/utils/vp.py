@@ -4,7 +4,7 @@ from typing import Optional, List, Any, Dict
 
 @dataclass
 class VP:
-    id: int
+    unique_id: int
     ip: str
     asn: int
     source: Optional[str] = None
@@ -39,7 +39,7 @@ class VP:
         country = f"[{self.country}]" if self.country else ""
         org = f"{self.org_name}" if self.org_name else ""
         src = f" | source: {self.source}" if self.source else ""
-        parts = [str(self.id), ':', proto, "-", f"{self.ip}", f"AS{self.asn}"]
+        parts = [str(self.unique_id), ':', proto, "-", f"{self.ip}", f"AS{self.asn}"]
         if country:
             parts.append(country)
         if org:
@@ -96,7 +96,7 @@ class VPBMP(VP):
         country = f"[{self.country}]" if self.country else ""
         org = f"{self.org_name}" if self.org_name else ""
         src = f" | source: {self.source}" if self.source else ""
-        parts = [str(self.id), ':', proto, "-", f"{self.ip}", f"AS{self.asn}"]
+        parts = [str(self.unique_id), ':', proto, "-", f"{self.ip}", f"AS{self.asn}"]
         if country:
             parts.append(country)
         if org:

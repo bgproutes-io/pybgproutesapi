@@ -67,11 +67,11 @@ def parse_vps(vp_items):
 
     for it in vp_items.get('bgp', []):
         # Common fields with fallbacks for possible key names
-        id = it.get("id")
+        unique_id = it.get("id")
         ip = it.get("ip")
         asn = it.get("asn")
 
-        if id is None:
+        if unique_id is None:
             continue
 
         # Optional common fields
@@ -89,7 +89,7 @@ def parse_vps(vp_items):
         # Build objects
         vps.append(
             VPBGP(
-                id=int(id),
+                unique_id=int(unique_id),
                 ip=str(ip),
                 asn=int(asn),
                 source=source,
@@ -107,7 +107,7 @@ def parse_vps(vp_items):
 
     for it in vp_items.get('bmp', []):
         # Common fields with fallbacks for possible key names
-        id = it.get("id")
+        unique_id = it.get("id")
         ip = it.get("ip")
         asn = it.get("asn")
 
@@ -135,7 +135,7 @@ def parse_vps(vp_items):
 
         vps.append(
             VPBMP(
-                id=int(id),
+                unique_id=int(unique_id),
                 ip=str(ip),
                 asn=int(asn),
                 source=source,
