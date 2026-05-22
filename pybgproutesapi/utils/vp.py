@@ -18,6 +18,8 @@ class VP:
     status_since: Optional[Any] = None
     status_history: Optional[Any] = None
     uptime_intervals: Optional[Any] = None
+    rib_history: Optional[Any] = None
+    rib_status: Optional[Any] = None
 
     def __eq__(self, other):
         if not isinstance(other, VP):
