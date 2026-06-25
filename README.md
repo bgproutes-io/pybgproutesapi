@@ -95,7 +95,7 @@ print(format_rib_response(rib_merged))
 
 ## 📘 API endpoints
 
-This library wraps four main endpoints:
+This library wraps the public API endpoints, plus internal endpoints when the server was deployed with `IS_DEPLOYED_INTERNALLY=True`:
 
 | Function          | API Endpoint       | Description                            |
 |-------------------|--------------------|----------------------------------------|
@@ -103,6 +103,11 @@ This library wraps four main endpoints:
 | `updates()`       | `/updates`         | Query BGP updates                      |
 | `rib()`           | `/rib`             | Retrieve RIB entries at a given time   |
 | `topology()`      | `/topology`        | Retrieve the AS-level topology         |
+| `messages()`      | `/messages`        | Count BGP/BMP messages in time buckets |
+| `monitoring()`    | `/monitoring`      | Aggregate BMP session counters         |
+| `bmp_rib_with_status()` | `/bmp_rib_with_status` | Internal BMP pre/post RIB status |
+| `bmp_updates_for_analysis()` | `/bmp_updates_for_analysis` | Internal BMP pre/post update analysis |
+| `route_propagation_path()` | `/route_propagation_path` | Internal route propagation graph |
 
 Each function supports the full range of query parameters provided by the API and returns the `data` portion of the API response by default.  
 For detailed parameter descriptions, usage examples, and advanced options, refer to the official [API documentation](https://bgproutes.io/data_api).
