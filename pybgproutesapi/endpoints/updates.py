@@ -48,9 +48,9 @@ def updates(
 
     for vp in vps:
         if vp.peering_protocol == 'bgp':
-            vp_bgp_ids.append(vp.id)
+            vp_bgp_ids.append(vp.unique_id)
         else:
-            vp_bmp_ids.append(vp.id)
+            vp_bmp_ids.append(vp.unique_id)
 
     params = {
         "vp_bgp_ids": _csv(vp_bgp_ids) if vp_bgp_ids else None,
@@ -84,5 +84,4 @@ def updates(
         return post("/updates", params, details, base_url=base_url, api_key=api_key)
     else:
         return get(f"/updates", params, details, base_url=base_url, api_key=api_key)
-
 

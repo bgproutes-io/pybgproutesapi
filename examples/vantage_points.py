@@ -45,14 +45,14 @@ def run_vp_query(description: str, *, show_n: int = 10, **kwargs) -> None:
             )
 
             print(
-                f"    {i:02d}. id={vp.id} protocol=bgp "
+                f"    {i:02d}. id={vp.unique_id} protocol=bgp "
                 f"status={vp.status} since={since}"
             )
 
         else:  # BMP
             ft_str = ",".join(map(str, vp.bmp_feed_types))
             print(
-                f"    {i:02d}. id={vp.id} protocol=bmp "
+                f"    {i:02d}. id={vp.unique_id} protocol=bmp "
                 f"feed_types={ft_str}"
             )
 
@@ -137,7 +137,15 @@ for proto in ["bgp", "bmp"]:
         status=["down"],
     )
 
-    # 6) With date + rib_size_v4 threshold + status=['ready']
+    # 6) With date + status=['unknown']
+    run_vp_query(
+        f"List VPs at date={rib_date_str} filtered by status=['unknown'].",
+        **base_kwargs,
+        date=rib_date_str,
+        status=["unknown"],
+    )
+
+    # 7) With date + rib_size_v4 threshold + status=['ready']
     run_vp_query(
         f"List VPs at date={rib_date_str} with rib_size_v4 > 900000 and status=['ready'].",
         **base_kwargs,
@@ -146,7 +154,7 @@ for proto in ["bgp", "bmp"]:
         status=["ready"],
     )
 
-    # 7) 24h interval using date_end + status=['up','down']
+    # 8) 24h interval using date_end + status=['up','down']
     run_vp_query(
         f"List VPs over a 24h interval: date={rib_date_str} to date_end={date_end_str}, filtered by status=['up','down'].",
         **base_kwargs,

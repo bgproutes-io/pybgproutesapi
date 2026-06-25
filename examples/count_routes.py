@@ -88,8 +88,8 @@ def route_count(afi, asn, date=datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")):
                 return_count=True,
                 data_afi=6 if '6' in afi else 4)
 
-            if str(vp.id) in response[vp.peering_protocol]:
-                route_count[vp] = response[vp.peering_protocol][str(vp.id)]
+            if str(vp.unique_id) in response[vp.peering_protocol]:
+                route_count[vp] = response[vp.peering_protocol][str(vp.unique_id)]
             else:
                 route_count[vp] = 0
 

@@ -45,8 +45,8 @@ def vantage_points(
         "status": _csv(status),
         "return_status_history": return_status_history,
         "return_uptime_intervals": return_uptime_intervals
-
     }
+
     items = get("/vantage_points", params, details, base_url=base_url, api_key=api_key)
 
     if details:
@@ -66,11 +66,11 @@ def parse_vps(vp_items):
 
     for it in vp_items.get('bgp', []):
         # Common fields with fallbacks for possible key names
-        id = it.get("id")
+        unique_id = it.get("id")
         ip = it.get("ip")
         asn = it.get("asn")
 
-        if id is None:
+        if unique_id is None:
             continue
 
         # Optional common fields
@@ -84,11 +84,13 @@ def parse_vps(vp_items):
         status_since = it.get("status_since")
         status_history = it.get("status_history")
         uptime_intervals = it.get("uptime_intervals")
+        rib_history = it.get('rib_history')
+        rib_status = it.get('rib_status')
 
         # Build objects
         vps.append(
             VPBGP(
-                unique_id=int(id),
+                unique_id=int(unique_id),
                 ip=str(ip),
                 asn=int(asn),
                 source=source,
@@ -101,12 +103,14 @@ def parse_vps(vp_items):
                 status_since=status_since,
                 status_history=status_history,
                 uptime_intervals=uptime_intervals,
+                rib_history=rib_history,
+                rib_status=rib_status
             )
         )
 
     for it in vp_items.get('bmp', []):
         # Common fields with fallbacks for possible key names
-        id = it.get("id")
+        unique_id = it.get("id")
         ip = it.get("ip")
         asn = it.get("asn")
 
@@ -121,6 +125,10 @@ def parse_vps(vp_items):
         status_since = it.get("status_since")
         status_history = it.get("status_history")
         uptime_intervals = it.get("uptime_intervals")
+        rib_history = it.get('rib_history')
+        rib_status = it.get('rib_status')
+        rib_history = it.get('rib_history')
+        rib_status = it.get('rib_status')
 
         # BMP-specific info can be nested or flat depending on your API
         peer_id = it.get("peer_id", {})
@@ -134,7 +142,7 @@ def parse_vps(vp_items):
 
         vps.append(
             VPBMP(
-                unique_id=int(id),
+                unique_id=int(unique_id),
                 ip=str(ip),
                 asn=int(asn),
                 source=source,
@@ -147,6 +155,8 @@ def parse_vps(vp_items):
                 status_since=status_since,
                 status_history=status_history,
                 uptime_intervals=uptime_intervals,
+                rib_history=rib_history,
+                rib_status=rib_status,
                 peer_id=peer_id,
                 bmp_parent_org_name=bmp_parent_org_name,
                 bmp_parent_asn=bmp_parent_asn,
