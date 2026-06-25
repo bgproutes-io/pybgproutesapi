@@ -14,11 +14,14 @@ API_KEY = None  # or set BGP_API_KEY in the environment
 ```python
 vps = vantage_points(
     vp_bmp_ids=[1],
+    return_rib_history=True,
+    rib_status=True,
     base_url=BASE_URL,
     api_key=API_KEY,
 )
 vp = vps[0]
 print(vp.id, vp.ip, vp.bmp_feed_types)
+print(vp.rib_history, vp.rib_status)
 ```
 
 ## Count Updates

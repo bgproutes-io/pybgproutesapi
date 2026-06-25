@@ -28,6 +28,8 @@ Important arguments:
 | `rib_size_v4`, `rib_size_v6` | tuple | Operator/value tuple, e.g. `(">", 900000)`. |
 | `status` | list/string | Status filter. |
 | `return_status_history` | bool | Include status history. |
+| `return_rib_history` | bool | Include recent RIB origin/difference history. |
+| `rib_status` | bool | Include RIB history completeness/corruption notes. |
 
 Returned objects expose `unique_id` and compatibility property `id`, plus `ip`, `asn`, `peering_protocol`, RIB sizes, status fields, and BMP parent/feed fields on `VPBMP`.
 
