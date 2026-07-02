@@ -21,6 +21,8 @@ def vantage_points(
     status: Optional[List[str]] = None,
     return_status_history: Optional[bool] = False,
     return_uptime_intervals: Optional[bool] = False,
+    return_rib_history: Optional[bool] = False,
+    rib_status: Optional[bool] = False,
     return_metadata: Optional[bool] = False,
     details: Optional[bool] = False,
     base_url: str = None,
@@ -46,6 +48,8 @@ def vantage_points(
         "status": _csv(status),
         "return_status_history": return_status_history,
         "return_uptime_intervals": return_uptime_intervals,
+        "return_rib_history": return_rib_history,
+        "rib_status": rib_status,
         "return_metadata": return_metadata
     }
 

@@ -36,6 +36,10 @@ class VP:
     def _get_comparison_key(self):
         raise NotImplementedError
 
+    @property
+    def id(self) -> int:
+        return self.unique_id
+
     # ---------- Pretty printing ----------
     def __str__(self) -> str:
         proto = self.peering_protocol or "vp"
