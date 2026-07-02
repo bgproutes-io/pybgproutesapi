@@ -20,7 +20,8 @@ class VP:
     uptime_intervals: Optional[Any] = None
     rib_history: Optional[Any] = None
     rib_status: Optional[Any] = None
-
+    metadata: Optional[Any] = None
+    
     def __eq__(self, other):
         if not isinstance(other, VP):
             return False
@@ -79,6 +80,8 @@ class VPBMP(VP):
     status_since: Dict[str] = None
     status_history: Dict[Any] = None
     uptime_intervals: Dict[Any] = None
+    rib_size_v4_per_feed: Dict[Any] = None
+    rib_size_v6_per_feed: Dict[Any] = None
 
     # This is just an informational variable used within the code for optimizations but not given to the user.
     bmp_feed_types_all: List[int] = None

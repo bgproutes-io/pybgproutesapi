@@ -21,6 +21,7 @@ def vantage_points(
     status: Optional[List[str]] = None,
     return_status_history: Optional[bool] = False,
     return_uptime_intervals: Optional[bool] = False,
+    return_metadata: Optional[bool] = False,
     details: Optional[bool] = False,
     base_url: str = None,
     api_key: str = None,
@@ -44,7 +45,8 @@ def vantage_points(
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
         "status": _csv(status),
         "return_status_history": return_status_history,
-        "return_uptime_intervals": return_uptime_intervals
+        "return_uptime_intervals": return_uptime_intervals,
+        "return_metadata": return_metadata
     }
 
     items = get("/vantage_points", params, details, base_url=base_url, api_key=api_key)
@@ -86,6 +88,7 @@ def parse_vps(vp_items):
         uptime_intervals = it.get("uptime_intervals")
         rib_history = it.get('rib_history')
         rib_status = it.get('rib_status')
+        metadata = it.get('metadata')
 
         # Build objects
         vps.append(
@@ -104,7 +107,8 @@ def parse_vps(vp_items):
                 status_history=status_history,
                 uptime_intervals=uptime_intervals,
                 rib_history=rib_history,
-                rib_status=rib_status
+                rib_status=rib_status,
+                metadata=metadata
             )
         )
 
@@ -127,8 +131,7 @@ def parse_vps(vp_items):
         uptime_intervals = it.get("uptime_intervals")
         rib_history = it.get('rib_history')
         rib_status = it.get('rib_status')
-        rib_history = it.get('rib_history')
-        rib_status = it.get('rib_status')
+        metadata = it.get('metadata')
 
         # BMP-specific info can be nested or flat depending on your API
         peer_id = it.get("peer_id", {})
@@ -139,6 +142,8 @@ def parse_vps(vp_items):
         bmp_parent_ip = bmp_info.get("parent_ip")
         bmp_parent_ip_country = bmp_info.get("parent_ip_country")
         bmp_feed_types = bmp_info.get("feed_types")
+        rib_size_v4_per_feed = bmp_info.get("rib_size_v4_per_feed")
+        rib_size_v6_per_feed = bmp_info.get("rib_size_v6_per_feed")
 
         vps.append(
             VPBMP(
@@ -157,6 +162,7 @@ def parse_vps(vp_items):
                 uptime_intervals=uptime_intervals,
                 rib_history=rib_history,
                 rib_status=rib_status,
+                metadata=metadata,
                 peer_id=peer_id,
                 bmp_parent_org_name=bmp_parent_org_name,
                 bmp_parent_asn=bmp_parent_asn,
@@ -164,6 +170,8 @@ def parse_vps(vp_items):
                 bmp_parent_ip=bmp_parent_ip,
                 bmp_parent_ip_country=bmp_parent_ip_country,
                 bmp_feed_types=[int(x) for x in bmp_feed_types] if bmp_feed_types else [],
+                rib_size_v4_per_feed=rib_size_v4_per_feed,
+                rib_size_v6_per_feed=rib_size_v6_per_feed
             )
         )
 
