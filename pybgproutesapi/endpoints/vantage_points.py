@@ -20,7 +20,7 @@ def vantage_points(
     rib_size_v6: Optional[tuple] = None,
     status: Optional[List[str]] = None,
     return_status_history: Optional[bool] = False,
-    return_uptime_intervals: Optional[bool] = False,
+    return_rib_status: Optional[bool] = False,
     return_rib_history: Optional[bool] = False,
     rib_status: Optional[bool] = False,
     return_metadata: Optional[bool] = False,
@@ -47,7 +47,7 @@ def vantage_points(
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
         "status": _csv(status),
         "return_status_history": return_status_history,
-        "return_uptime_intervals": return_uptime_intervals,
+        "return_rib_status": return_rib_status,
         "return_rib_history": return_rib_history,
         "rib_status": rib_status,
         "return_metadata": return_metadata
@@ -89,9 +89,8 @@ def parse_vps(vp_items):
         status = it.get("status")
         status_since = it.get("status_since")
         status_history = it.get("status_history")
-        uptime_intervals = it.get("uptime_intervals")
-        rib_history = it.get('rib_history')
         rib_status = it.get('rib_status')
+        rib_history = it.get('rib_history')
         metadata = it.get('metadata')
 
         # Build objects
@@ -109,9 +108,8 @@ def parse_vps(vp_items):
                 status=status,
                 status_since=status_since,
                 status_history=status_history,
-                uptime_intervals=uptime_intervals,
-                rib_history=rib_history,
                 rib_status=rib_status,
+                rib_history=rib_history,
                 metadata=metadata
             )
         )
@@ -132,9 +130,8 @@ def parse_vps(vp_items):
         status = it.get("status")
         status_since = it.get("status_since")
         status_history = it.get("status_history")
-        uptime_intervals = it.get("uptime_intervals")
-        rib_history = it.get('rib_history')
         rib_status = it.get('rib_status')
+        rib_history = it.get('rib_history')
         metadata = it.get('metadata')
 
         # BMP-specific info can be nested or flat depending on your API
@@ -163,9 +160,8 @@ def parse_vps(vp_items):
                 status=status,
                 status_since=status_since,
                 status_history=status_history,
-                uptime_intervals=uptime_intervals,
-                rib_history=rib_history,
                 rib_status=rib_status,
+                rib_history=rib_history,
                 metadata=metadata,
                 peer_id=peer_id,
                 bmp_parent_org_name=bmp_parent_org_name,
