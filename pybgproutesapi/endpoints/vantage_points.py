@@ -90,6 +90,7 @@ def parse_vps(vp_items):
         country = it.get("country")
         org_name = it.get("org_name")
         org_country = it.get("org_country")
+        ixp_id = it.get("ixp_id")
         ixp_rs_ip = it.get("ixp_rs_ip")
         status = it.get("status")
         status_since = it.get("status_since")
@@ -110,6 +111,7 @@ def parse_vps(vp_items):
                 country=country,
                 org_name=org_name,
                 org_country=org_country,
+                ixp_id=ixp_id,
                 ixp_rs_ip=ixp_rs_ip,
                 status=status,
                 status_since=status_since,
@@ -133,6 +135,8 @@ def parse_vps(vp_items):
         country = it.get("country")
         org_name = it.get("org_name")
         org_country = it.get("org_country")
+        ixp_id = it.get("ixp_id")
+        ixp_rs_ip = it.get("ixp_rs_ip")
         status = it.get("status")
         status_since = it.get("status_since")
         status_history = it.get("status_history")
@@ -164,6 +168,7 @@ def parse_vps(vp_items):
                 country=country,
                 org_name=org_name,
                 org_country=org_country,
+                ixp_id=ixp_id,
                 ixp_rs_ip=ixp_rs_ip,
                 status=status,
                 status_since=status_since,
