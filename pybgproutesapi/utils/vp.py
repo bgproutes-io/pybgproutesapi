@@ -13,6 +13,7 @@ class VP:
     country: Optional[str] = None
     org_name: Optional[str] = None
     org_country: Optional[str] = None
+    ixp_rs_ip: Optional[str] = None
     peering_protocol: Optional[str] = None
     status: Optional[Any] = None
     status_since: Optional[Any] = None
