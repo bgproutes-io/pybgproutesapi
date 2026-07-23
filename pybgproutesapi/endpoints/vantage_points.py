@@ -18,6 +18,8 @@ def vantage_points(
     org_countries: Optional[Union[List[str], str]] = None,
     rib_size_v4: Optional[tuple] = None,
     rib_size_v6: Optional[tuple] = None,
+    ixp_ids: Optional[Union[List[str], str]] = None,
+    ixp_rs_ips: Optional[Union[List[str], str]] = None,
     status: Optional[List[str]] = None,
     return_status_history: Optional[bool] = False,
     return_rib_status: Optional[bool] = False,
@@ -45,6 +47,8 @@ def vantage_points(
         "org_countries": _csv(org_countries),
         "rib_size_v4": f"{rib_size_v4[0]},{rib_size_v4[1]}" if rib_size_v4 else None,
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
+        "ixp_ids": _csv(ixp_ids),
+        "ixp_rs_ips": _csv(ixp_rs_ips),
         "status": _csv(status),
         "return_status_history": return_status_history,
         "return_rib_status": return_rib_status,
@@ -86,6 +90,7 @@ def parse_vps(vp_items):
         country = it.get("country")
         org_name = it.get("org_name")
         org_country = it.get("org_country")
+        ixp_rs_ip = it.get("ixp_rs_ip")
         status = it.get("status")
         status_since = it.get("status_since")
         status_history = it.get("status_history")
@@ -105,6 +110,7 @@ def parse_vps(vp_items):
                 country=country,
                 org_name=org_name,
                 org_country=org_country,
+                ixp_rs_ip=ixp_rs_ip,
                 status=status,
                 status_since=status_since,
                 status_history=status_history,
@@ -137,6 +143,7 @@ def parse_vps(vp_items):
         # BMP-specific info can be nested or flat depending on your API
         peer_id = it.get("peer_id", {})
         bmp_info = it.get("bmp_info", {})
+        ixp_rs_ip = it.get("ixp_rs_ip") or bmp_info.get("ixp_rs_ip")
         bmp_parent_org_name = bmp_info.get("parent_org_name")
         bmp_parent_asn = bmp_info.get("parent_asn")
         bmp_parent_asn_country = bmp_info.get("parent_asn_country")
@@ -157,6 +164,7 @@ def parse_vps(vp_items):
                 country=country,
                 org_name=org_name,
                 org_country=org_country,
+                ixp_rs_ip=ixp_rs_ip,
                 status=status,
                 status_since=status_since,
                 status_history=status_history,
