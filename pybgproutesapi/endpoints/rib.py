@@ -22,6 +22,8 @@ def rib(
     return_aspa_status: bool = False,
     rov_status_filter: list[int] = None,
     aspa_status_filter: list[int] = None,
+    start_index: Optional[int] = None,
+    stop_index: Optional[int] = None,
     api_key: str = None,
 ) -> Any:
     # Normalize prefix_filter
@@ -66,7 +68,9 @@ def rib(
         "return_rov_status": return_rov_status,
         "return_aspa_status": return_aspa_status,
         "rov_status_filter": rov_status_filter,
-        "aspa_status_filter": aspa_status_filter
+        "aspa_status_filter": aspa_status_filter,
+        "start_index": start_index,
+        "stop_index": stop_index,
     }
 
     # Use POST if large lists are provided
