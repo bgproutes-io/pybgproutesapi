@@ -147,6 +147,7 @@ def parse_vps(vp_items):
         # BMP-specific info can be nested or flat depending on your API
         peer_id = it.get("peer_id", {})
         bmp_info = it.get("bmp_info", {})
+        ixp_rs_ip = it.get("ixp_rs_ip") or bmp_info.get("ixp_rs_ip")
         bmp_parent_org_name = bmp_info.get("parent_org_name")
         bmp_parent_asn = bmp_info.get("parent_asn")
         bmp_parent_asn_country = bmp_info.get("parent_asn_country")
