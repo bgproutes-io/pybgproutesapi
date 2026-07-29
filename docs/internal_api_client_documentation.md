@@ -4,7 +4,7 @@ These wrappers require an API deployment where `IS_DEPLOYED_INTERNALLY=True`.
 
 All functions accept `base_url`, `api_key`, and `details` like the public wrappers. With `details=False`, only the API `data` field is returned. With `details=True`, the full envelope is returned.
 
-Live test note: against `production_testing` (`http://192.168.130.1:8080`, API key `test`), all three wrappers passed smoke tests with BMP VP `1`.
+Live test note: against `production_testing` (`https://api.bgproutes.io`, API key `test`), all three wrappers passed smoke tests with BMP VP `1`.
 
 ## `bmp_rib_with_status(vp, date, ...)`
 

@@ -10,7 +10,7 @@ from pybgproutesapi import (
     route_propagation_path,
 )
 
-BASE_URL = "http://192.168.130.1:8080"
+BASE_URL = "https://api.bgproutes.io"
 API_KEY = "test"
 
 vp = vantage_points(vp_bmp_ids=[1], base_url=BASE_URL, api_key=API_KEY)[0]
