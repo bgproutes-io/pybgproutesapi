@@ -14,7 +14,8 @@ class VP:
     org_name: Optional[str] = None
     org_country: Optional[str] = None
     ixp_id: Optional[int] = None
-    ixp_rs_ip: Optional[str] = None
+    ixp_name: Optional[str] = None
+    ixp_is_rs: Optional[bool] = None
     peering_protocol: Optional[str] = None
     status: Optional[Any] = None
     status_since: Optional[Any] = None
@@ -61,10 +62,10 @@ class VP:
 
 @dataclass(eq=False)
 class VPBGP(VP):
-    status: str = None
-    status_since: str = None
-    status_history: List[Any] = None
-    uptime_intervals: List[Any] = None
+    status: Optional[List[str]] = None
+    status_since: Optional[Any] = None
+    status_history: Optional[List[Any]] = None
+    uptime_intervals: Optional[List[Any]] = None
 
     def __post_init__(self):
         self.peering_protocol = "bgp"
@@ -72,25 +73,25 @@ class VPBGP(VP):
     def _get_comparison_key(self):
         return (self.ip,)
 
-
 @dataclass(eq=False)
 class VPBMP(VP):
     peer_id: Optional[int] = None
-    bmp_parent_org_name: str = None
-    bmp_parent_asn: int = None
-    bmp_parent_asn_country: int = None
-    bmp_parent_ip: str = None
-    bmp_parent_ip_country: str = None
-    bmp_feed_types: List[int] = None
-    status: Dict[str] = None
-    status_since: Dict[str] = None
-    status_history: Dict[Any] = None
-    uptime_intervals: Dict[Any] = None
-    rib_size_v4_per_feed: Dict[Any] = None
-    rib_size_v6_per_feed: Dict[Any] = None
+    bmp_parent_org_name: Optional[str] = None
+    bmp_parent_asn: Optional[int] = None
+    bmp_parent_asn_country: Optional[str] = None
+    bmp_parent_ip: Optional[str] = None
+    bmp_parent_ip_country: Optional[str] = None
+    bmp_feed_types: Optional[List[int]] = None
+    bmp_parent_ixp_is_rs: Optional[bool] = None
+    status: Optional[Dict[str, Any]] = None
+    status_since: Optional[Dict[str, Any]] = None
+    status_history: Optional[Dict[Any, Any]] = None
+    uptime_intervals: Optional[Dict[Any, Any]] = None
+    rib_size_v4_per_feed: Optional[Dict[Any, Any]] = None
+    rib_size_v6_per_feed: Optional[Dict[Any, Any]] = None
 
     # This is just an informational variable used within the code for optimizations but not given to the user.
-    bmp_feed_types_all: List[int] = None
+    bmp_feed_types_all: Optional[List[int]] = None
 
     def __post_init__(self):
         self.peering_protocol = "bmp"

@@ -19,7 +19,9 @@ def vantage_points(
     rib_size_v4: Optional[tuple] = None,
     rib_size_v6: Optional[tuple] = None,
     ixp_ids: Optional[Union[List[str], str]] = None,
-    ixp_rs_ips: Optional[Union[List[str], str]] = None,
+    ixp_names: Optional[Union[List[str], str]] = None,
+    ixp_is_rs: Optional[bool] = None,
+    bmp_parent_ixp_is_rs: Optional[bool] = None,
     status: Optional[List[str]] = None,
     return_status_history: Optional[bool] = False,
     return_rib_status: Optional[bool] = False,
@@ -48,7 +50,9 @@ def vantage_points(
         "rib_size_v4": f"{rib_size_v4[0]},{rib_size_v4[1]}" if rib_size_v4 else None,
         "rib_size_v6": f"{rib_size_v6[0]},{rib_size_v6[1]}" if rib_size_v6 else None,
         "ixp_ids": _csv(ixp_ids),
-        "ixp_rs_ips": _csv(ixp_rs_ips),
+        "ixp_names": _csv(ixp_names),
+        "ixp_is_rs": ixp_is_rs,
+        "bmp_parent_ixp_is_rs": bmp_parent_ixp_is_rs,
         "status": _csv(status),
         "return_status_history": return_status_history,
         "return_rib_status": return_rib_status,
@@ -91,7 +95,8 @@ def parse_vps(vp_items):
         org_name = it.get("org_name")
         org_country = it.get("org_country")
         ixp_id = it.get("ixp_id")
-        ixp_rs_ip = it.get("ixp_rs_ip")
+        ixp_name = it.get("ixp_name")
+        ixp_is_rs = it.get("ixp_is_rs")
         status = it.get("status")
         status_since = it.get("status_since")
         status_history = it.get("status_history")
@@ -112,7 +117,8 @@ def parse_vps(vp_items):
                 org_name=org_name,
                 org_country=org_country,
                 ixp_id=ixp_id,
-                ixp_rs_ip=ixp_rs_ip,
+                ixp_name=ixp_name,
+                ixp_is_rs=ixp_is_rs,
                 status=status,
                 status_since=status_since,
                 status_history=status_history,
@@ -136,7 +142,8 @@ def parse_vps(vp_items):
         org_name = it.get("org_name")
         org_country = it.get("org_country")
         ixp_id = it.get("ixp_id")
-        ixp_rs_ip = it.get("ixp_rs_ip")
+        ixp_name = it.get("ixp_name")
+        ixp_is_rs = it.get("ixp_is_rs")
         status = it.get("status")
         status_since = it.get("status_since")
         status_history = it.get("status_history")
@@ -147,13 +154,13 @@ def parse_vps(vp_items):
         # BMP-specific info can be nested or flat depending on your API
         peer_id = it.get("peer_id", {})
         bmp_info = it.get("bmp_info", {})
-        ixp_rs_ip = it.get("ixp_rs_ip") or bmp_info.get("ixp_rs_ip")
         bmp_parent_org_name = bmp_info.get("parent_org_name")
         bmp_parent_asn = bmp_info.get("parent_asn")
         bmp_parent_asn_country = bmp_info.get("parent_asn_country")
         bmp_parent_ip = bmp_info.get("parent_ip")
         bmp_parent_ip_country = bmp_info.get("parent_ip_country")
         bmp_feed_types = bmp_info.get("feed_types")
+        bmp_parent_ixp_is_rs = bmp_info.get("parent_ixp_is_rs")
         rib_size_v4_per_feed = bmp_info.get("rib_size_v4_per_feed")
         rib_size_v6_per_feed = bmp_info.get("rib_size_v6_per_feed")
 
@@ -169,7 +176,8 @@ def parse_vps(vp_items):
                 org_name=org_name,
                 org_country=org_country,
                 ixp_id=ixp_id,
-                ixp_rs_ip=ixp_rs_ip,
+                ixp_name=ixp_name,
+                ixp_is_rs=ixp_is_rs,
                 status=status,
                 status_since=status_since,
                 status_history=status_history,
@@ -183,6 +191,7 @@ def parse_vps(vp_items):
                 bmp_parent_ip=bmp_parent_ip,
                 bmp_parent_ip_country=bmp_parent_ip_country,
                 bmp_feed_types=[int(x) for x in bmp_feed_types] if bmp_feed_types else [],
+                bmp_parent_ixp_is_rs=bmp_parent_ixp_is_rs,
                 rib_size_v4_per_feed=rib_size_v4_per_feed,
                 rib_size_v6_per_feed=rib_size_v6_per_feed
             )
