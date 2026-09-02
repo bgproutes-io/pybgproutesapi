@@ -81,6 +81,7 @@ class VPBMP(VP):
     bmp_parent_asn_country: Optional[str] = None
     bmp_parent_ip: Optional[str] = None
     bmp_parent_ip_country: Optional[str] = None
+    bmp_parent_source_ip: Optional[str] = None
     bmp_feed_types: Optional[List[int]] = None
     bmp_parent_ixp_is_rs: Optional[bool] = None
     status: Optional[Dict[str, Any]] = None
@@ -97,7 +98,7 @@ class VPBMP(VP):
         self.peering_protocol = "bmp"
 
     def _get_comparison_key(self):
-        return (self.ip, self.asn, self.bmp_parent_ip, self.bmp_parent_asn, tuple(sorted(self.bmp_feed_types or [])))
+        return (self.ip, self.asn, self.bmp_parent_ip, self.bmp_parent_asn, self.bmp_parent_source_ip, tuple(sorted(self.bmp_feed_types or [])))
 
     # ---------- Pretty printing with feed types ----------
     def __str__(self) -> str:

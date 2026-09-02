@@ -10,6 +10,7 @@ def vantage_points(
     peering_protocol: Optional[Union[List[str], str]] = None,
     bmp_parent_ips: Optional[Union[List[str], str]] = None,
     bmp_parent_asns: Optional[Union[List[int], str]] = None,
+    bmp_parent_source_ips: Optional[Union[List[str], str]] = None,
     date: Optional[Union[str, List[str]]] = None,
     date_end: Optional[Union[str, List[str]]] = None,
     data_afi: Optional[int] = None,
@@ -41,6 +42,7 @@ def vantage_points(
         "peering_protocol": _csv(peering_protocol),
         "bmp_parent_ips": _csv(bmp_parent_ips),
         "bmp_parent_asns": _csv(bmp_parent_asns),
+        "bmp_parent_source_ips": _csv(bmp_parent_source_ips),
         "date": date,  # pass through (API may expect ISO string or day)
         "date_end": date_end,  # pass through (API may expect ISO string or day)
         "data_afi": data_afi,
@@ -159,6 +161,7 @@ def parse_vps(vp_items):
         bmp_parent_asn_country = bmp_info.get("parent_asn_country")
         bmp_parent_ip = bmp_info.get("parent_ip")
         bmp_parent_ip_country = bmp_info.get("parent_ip_country")
+        bmp_parent_source_ip = bmp_info.get("parent_source_ip")
         bmp_feed_types = bmp_info.get("feed_types")
         bmp_parent_ixp_is_rs = bmp_info.get("parent_ixp_is_rs")
         rib_size_v4_per_feed = bmp_info.get("rib_size_v4_per_feed")
@@ -190,6 +193,7 @@ def parse_vps(vp_items):
                 bmp_parent_asn_country=bmp_parent_asn_country,
                 bmp_parent_ip=bmp_parent_ip,
                 bmp_parent_ip_country=bmp_parent_ip_country,
+                bmp_parent_source_ip=bmp_parent_source_ip,
                 bmp_feed_types=[int(x) for x in bmp_feed_types] if bmp_feed_types else [],
                 bmp_parent_ixp_is_rs=bmp_parent_ixp_is_rs,
                 rib_size_v4_per_feed=rib_size_v4_per_feed,
