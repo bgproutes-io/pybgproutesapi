@@ -1,3 +1,5 @@
+# Demonstrate vantage-point queries and print BGP/BMP status and history details.
+
 from __future__ import annotations
 
 import sys

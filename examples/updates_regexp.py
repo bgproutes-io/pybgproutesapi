@@ -1,3 +1,5 @@
+# Count and print updates whose AS path matches AS3333 across selected feeders.
+
 from pybgproutesapi import vantage_points, updates, format_updates_response, chunked, merge_responses
 from datetime import datetime, timedelta
 

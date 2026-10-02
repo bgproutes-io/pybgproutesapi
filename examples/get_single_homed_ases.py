@@ -1,3 +1,5 @@
+# Build an AS topology from selected RIBs and list AS5511's single-homed neighbors.
+
 from pybgproutesapi import vantage_points, topology, chunked
 from datetime import datetime, timedelta
 import networkx as nx
@@ -21,7 +23,7 @@ vps = vps[:30]
 G = nx.Graph()
 
 # Process in batches of 10
-for vp_batch in chunked(vps, 10):
+for vp_batch in chunked(vps, 2):
     vp_str = ", ".join(
         f"Protocol: {x.peering_protocol}, ID: {x.unique_id}"
     for x in vp_batch

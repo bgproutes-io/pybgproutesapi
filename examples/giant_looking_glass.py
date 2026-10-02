@@ -1,3 +1,5 @@
+# Query selected prefixes across large RIBs and print routes with ROV and ASPA status.
+
 from pybgproutesapi import vantage_points, rib, format_rib_response
 from datetime import datetime, timedelta, timezone
 

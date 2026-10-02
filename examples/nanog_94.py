@@ -1,3 +1,5 @@
+# Compare AS links observed by RouteViews, RIS, and PCH and print their overlaps.
+
 from datetime import datetime, timedelta
 from pybgproutesapi import vantage_points, topology, chunked
 
@@ -79,4 +81,3 @@ print(f"Links only in RIS & RouteViews: {len(ris_rv_only)}")
 print(f"Links only in PCH: {len(only_pch)}")
 print(f"Links only in RIS: {len(only_ris)}")
 print(f"Links only in RouteViews: {len(only_rv)}")
-

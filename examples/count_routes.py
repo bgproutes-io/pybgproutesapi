@@ -1,5 +1,7 @@
 #/usr/bin/env python
 
+# Estimate an AS's route count from selected vantage-point RIBs for IPv4 or IPv6.
+
 # Copyright 2025 Alarig Le Lay <alarig@swordarmor.fr>
 # Code revised by Thomas Holterbach to support pulling data from bgproutes.io with the pybgproutesapi library.
 # Distributed under the terms of the GNU General Public License v3

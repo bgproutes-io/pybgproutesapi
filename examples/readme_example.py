@@ -1,3 +1,5 @@
+# Fetch and print BGP updates and RIB entries for selected RIS vantage points.
+
 from pybgproutesapi import vantage_points, updates, rib, format_updates_response, format_rib_response, chunked, merge_responses
 from datetime import datetime, timedelta
 
@@ -12,9 +14,9 @@ start_date_str = start_time.strftime("%Y-%m-%dT%H:%M:%S")
 end_date_str = end_time.strftime("%Y-%m-%dT%H:%M:%S")
 rib_date_str = rib_time.strftime("%Y-%m-%dT%H:%M:%S")
 
-# Get vantage points in FR or US from RIS or PCH
+# Get vantage points in FR or US from RIS
 vps = vantage_points(
-    sources=["ris", "pch"],
+    sources=["ris"],
     countries=["FR", "CH"],
     date=start_date_str,
     date_end=end_date_str

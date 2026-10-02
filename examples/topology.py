@@ -1,54 +1,59 @@
-from datetime import datetime, timedelta
+# Count distinct AS links and paths in yesterday's topology for selected vantage points.
+
+from datetime import datetime, timedelta, timezone
 from pybgproutesapi import vantage_points, topology
 
-# Use current day minus one day
-yesterday = datetime.utcnow() - timedelta(days=1)
-date = yesterday.replace(hour=20, minute=0, second=0, microsecond=0)
-date_str = date.strftime("%Y-%m-%d")
+# Retrieve topology over yesterday's UTC interval and combine unique
+# AS links and AS paths across the first 10 vantage points.
+today = datetime.now(timezone.utc).replace(
+    hour=0, minute=0, second=0, microsecond=0
+)
+yesterday = today - timedelta(days=1)
 
-# Get all vantage points in a french network.
+date_str = yesterday.strftime("%Y-%m-%dT%H:%M:%S")
+date_end_str = today.strftime("%Y-%m-%dT%H:%M:%S")
+vp_date_str = yesterday.replace(hour=20).strftime("%Y-%m-%dT%H:%M:%S")
+
 vps = vantage_points(
+    date=vp_date_str,
     sources=["ris", "routeviews", "bgproutes.io", "pch", "cgtf"],
-    # countries=['FR']
+    # countries=["FR"],
 )[:10]
 
+print(f"Interval: {date_str} to {date_end_str} UTC")
 print(f"Total vantage points: {len(vps)}")
 
-# Store unique AS links (as tuples)
 all_links = set()
-
-# Store unique AS paths
 all_aspaths = set()
+failed_batches = 0
 
-# Process in batches of 10
 batch_size = 50
 for i in range(0, len(vps), batch_size):
     batch = vps[i:i + batch_size]
-    print(f"Processing batch {i // batch_size + 1} with {len(batch)} VPs...")
-    
+    batch_number = i // batch_size + 1
+    print(f"Processing batch {batch_number} with {len(batch)} VPs...")
+    print (date_str)
     try:
         topo = topology(
             batch,
-            date="2025-11-21",
-            date_end="2025-11-25",
+            date=date_str,
             with_aspath=True,
             with_updates=True,
             with_rib=True,
-            ignore_private_asns=True)
-        
-        # Normalize links as tuples of integers
+            ignore_private_asns=True,
+        )
+
         for as1, as2 in topo["links"]:
-            if as1 < as2:
-                all_links.add((as1, as2))
-            else:
-                all_links.add((as2, as1))
-        
-        all_aspaths.update(topo['aspaths'])
+            all_links.add((min(as1, as2), max(as1, as2)))
+
+        all_aspaths.update(topo["aspaths"])
+
     except Exception as e:
-        print(f"Error processing batch {i // batch_size + 1}: {e}")
+        failed_batches += 1
+        print(f"Error processing batch {batch_number}: {e}")
 
-# Return total count of distinct links
+if failed_batches:
+    print(f"\nResults are incomplete: {failed_batches} batch(es) failed.")
+
 print(f"Total distinct AS links: {len(all_links)}")
-
-# Return total count of distinct links
-print(f"Total distinct AS aspaths: {len(all_aspaths)}")
+print(f"Total distinct AS paths: {len(all_aspaths)}")
