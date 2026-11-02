@@ -7,6 +7,7 @@ class VP:
     unique_id: int
     ip: str
     asn: int
+    vrf_name: str
     source: Optional[str] = None
     rib_size_v4: Optional[int] = None
     rib_size_v6: Optional[int] = None
@@ -71,7 +72,7 @@ class VPBGP(VP):
         self.peering_protocol = "bgp"
 
     def _get_comparison_key(self):
-        return (self.ip,)
+        return (self.ip, self.vrf_name,)
 
 @dataclass(eq=False)
 class VPBMP(VP):
@@ -82,6 +83,7 @@ class VPBMP(VP):
     bmp_parent_ip: Optional[str] = None
     bmp_parent_ip_country: Optional[str] = None
     bmp_parent_source_ip: Optional[str] = None
+    bmp_parent_router_name: Optional[str] = None
     bmp_feed_types: Optional[List[int]] = None
     bmp_parent_ixp_is_rs: Optional[bool] = None
     status: Optional[Dict[str, Any]] = None
@@ -98,7 +100,7 @@ class VPBMP(VP):
         self.peering_protocol = "bmp"
 
     def _get_comparison_key(self):
-        return (self.ip, self.asn, self.bmp_parent_ip, self.bmp_parent_asn, self.bmp_parent_source_ip, tuple(sorted(self.bmp_feed_types or [])))
+        return (self.ip, self.asn, self.vrf_name, self.bmp_parent_ip, self.bmp_parent_asn, self.bmp_parent_source_ip, tuple(sorted(self.bmp_feed_types or [])), self.bmp_parent_router_name)
 
     # ---------- Pretty printing with feed types ----------
     def __str__(self) -> str:

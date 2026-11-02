@@ -32,6 +32,7 @@ def vantage_points(
     details: Optional[bool] = False,
     base_url: str = None,
     api_key: str = None,
+    vrf_names: Optional[Union[List[str], str]] = None,
 ) -> List[Union[VPBGP, VPBMP]]:
     # Normalize params to CSV where the API expects comma-separated strings
     params = {
@@ -39,6 +40,7 @@ def vantage_points(
         "vp_bmp_ids": _csv(vp_bmp_ids),
         "vp_ips": _csv(vp_ips),
         "vp_asns": _csv(vp_asns),
+        "vrf_names": _csv(vrf_names),
         "peering_protocol": _csv(peering_protocol),
         "bmp_parent_ips": _csv(bmp_parent_ips),
         "bmp_parent_asns": _csv(bmp_parent_asns),
@@ -77,7 +79,9 @@ def vantage_points(
     else:
         return vps
 
-def parse_vps(vp_items):
+
+
+def parse_vps(vp_items: dict[str, list[dict[str, int | str]]]):
     vps: List[Union[VPBGP, VPBMP]] = []
 
     for it in vp_items.get('bgp', []):
@@ -85,6 +89,7 @@ def parse_vps(vp_items):
         unique_id = it.get("id")
         ip = it.get("ip")
         asn = it.get("asn")
+        vrf_name = it.get("vrf_name")
 
         if unique_id is None:
             continue
@@ -112,6 +117,7 @@ def parse_vps(vp_items):
                 unique_id=int(unique_id),
                 ip=str(ip),
                 asn=int(asn),
+                vrf_name=vrf_name,
                 source=source,
                 rib_size_v4=rib_size_v4,
                 rib_size_v6=rib_size_v6,
@@ -135,6 +141,7 @@ def parse_vps(vp_items):
         unique_id = it.get("id")
         ip = it.get("ip")
         asn = it.get("asn")
+        vrf_name = it.get("vrf_name")
 
         # Optional common fields
         source = it.get("source")
@@ -162,6 +169,7 @@ def parse_vps(vp_items):
         bmp_parent_ip = bmp_info.get("parent_ip")
         bmp_parent_ip_country = bmp_info.get("parent_ip_country")
         bmp_parent_source_ip = bmp_info.get("parent_source_ip")
+        bmp_parent_router_name = bmp_info.get("bmp_parent_router_name")
         bmp_feed_types = bmp_info.get("feed_types")
         bmp_parent_ixp_is_rs = bmp_info.get("parent_ixp_is_rs")
         rib_size_v4_per_feed = bmp_info.get("rib_size_v4_per_feed")
@@ -172,6 +180,7 @@ def parse_vps(vp_items):
                 unique_id=int(unique_id),
                 ip=str(ip),
                 asn=int(asn),
+                vrf_name=vrf_name,
                 source=source,
                 rib_size_v4=rib_size_v4,
                 rib_size_v6=rib_size_v6,
@@ -194,6 +203,7 @@ def parse_vps(vp_items):
                 bmp_parent_ip=bmp_parent_ip,
                 bmp_parent_ip_country=bmp_parent_ip_country,
                 bmp_parent_source_ip=bmp_parent_source_ip,
+                bmp_parent_router_name=bmp_parent_router_name,
                 bmp_feed_types=[int(x) for x in bmp_feed_types] if bmp_feed_types else [],
                 bmp_parent_ixp_is_rs=bmp_parent_ixp_is_rs,
                 rib_size_v4_per_feed=rib_size_v4_per_feed,
