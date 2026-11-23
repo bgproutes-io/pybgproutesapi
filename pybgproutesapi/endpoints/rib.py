@@ -27,6 +27,7 @@ def rib(
     start_index: Optional[int] = None,
     stop_index: Optional[int] = None,
     api_key: str = None,
+    get_metadata: bool = False,
 ) -> Any:
     # Normalize prefix_filter
     if isinstance(prefix_filter, list):
@@ -75,6 +76,7 @@ def rib(
         "aspa_status_filter": aspa_status_filter,
         "start_index": start_index,
         "stop_index": stop_index,
+        "get_metadata": get_metadata,
     }
 
     # Use POST if large lists are provided

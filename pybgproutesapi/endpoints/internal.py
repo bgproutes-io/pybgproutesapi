@@ -39,6 +39,7 @@ def bmp_rib_with_status(
     details: bool = False,
     base_url: str = None,
     api_key: str = None,
+    get_metadata: bool = False,
 ) -> Any:
     """Query `/bmp_rib_with_status` for one BMP VP."""
     params = {
@@ -61,6 +62,7 @@ def bmp_rib_with_status(
         "aspa_status_filter": _csv(aspa_status_filter),
         "start_index": start_index,
         "stop_index": stop_index,
+        "get_metadata": get_metadata,
     }
 
     if (
@@ -98,6 +100,7 @@ def bmp_updates_for_analysis(
     details: bool = False,
     base_url: str = None,
     api_key: str = None,
+    get_metadata: bool = False,
 ) -> Any:
     """Query `/bmp_updates_for_analysis` for one BMP VP."""
     params = {
@@ -121,6 +124,7 @@ def bmp_updates_for_analysis(
         "rov_status_filter": _csv(rov_status_filter),
         "return_aspa_status": return_aspa_status,
         "aspa_status_filter": _csv(aspa_status_filter),
+        "get_metadata": get_metadata,
     }
 
     if isinstance(prefix_exact_match, list) and len(prefix_exact_match) > 10:

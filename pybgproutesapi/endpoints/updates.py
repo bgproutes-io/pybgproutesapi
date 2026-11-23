@@ -28,6 +28,7 @@ def updates(
     return_aspa_status: bool = False,
     rov_status_filter: list[int] = None,
     aspa_status_filter: list[int] = None,
+    get_metadata: bool = False,
 ) -> Any:
 
     # Normalize prefix_filter
@@ -77,7 +78,8 @@ def updates(
         "return_rov_status": return_rov_status,
         "return_aspa_status": return_aspa_status,
         "rov_status_filter": rov_status_filter,
-        "aspa_status_filter": aspa_status_filter
+        "aspa_status_filter": aspa_status_filter,
+        "get_metadata": get_metadata,
     }
 
     # Use POST if too many exact matches, otherwise GET

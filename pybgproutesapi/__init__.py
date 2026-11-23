@@ -1,4 +1,5 @@
 from .endpoints.vantage_points import vantage_points
+from .endpoints.routers import routers
 from .endpoints.updates import updates
 from .endpoints.rib import rib
 from .endpoints.topology import topology
@@ -14,6 +15,7 @@ from .utils.helpers import chunked, merge_responses
 
 __all__ = [
     "vantage_points",
+    "routers",
     "rib",
     "updates",
     "topology",

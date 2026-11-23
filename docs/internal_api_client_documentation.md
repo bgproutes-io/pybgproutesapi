@@ -26,6 +26,7 @@ Arguments:
 | `return_rov_status`, `return_aspa_status` | bool | `True` | Include RPKI/ASPA statuses. |
 | `rov_status_filter`, `aspa_status_filter` | list/string | `None` | Status filters using API codes. |
 | `start_index`, `stop_index` | int | `None` | Optional API index window. |
+| `get_metadata` | bool | `False` | Return `entries` plus ASN/prefix metadata for results below 15,000 entries. |
 
 Return row shape:
 
@@ -53,6 +54,8 @@ Live caveat: exact-prefix filters reliably produce small responses. On `producti
 Wraps `/v1/bmp_updates_for_analysis`. `vp` may be a `VPBMP` object or integer BMP VP ID.
 
 Arguments include `adj_rib_type` (`"in"`, `"out"`, or `None` for both), `visibility`, `data_afi`, `chronological_order`, `max_updates_to_return`, prefix/AS-path/community filters, and RPKI/ASPA return/filter flags.
+
+Set `get_metadata=True` to add a `metadata` key containing ASN and prefix maps. The API rejects metadata requests whose combined selected result has 15,000 or more entries.
 
 Return:
 
